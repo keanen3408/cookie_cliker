@@ -1,0 +1,115 @@
+body {
+    margin: 0;
+    padding: 30px;
+    background: #1e1633;
+    color: #fff4d6;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    font-size: 42px;
+    color: #ffcc66;
+    margin-bottom: 10px;
+}
+
+h2 {
+    color: #ff9f43;
+    margin-top: 35px;
+}
+
+p {
+    font-size: 18px;
+}
+
+#counter {
+    color: #ffd166;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#cps {
+    color: #70e000;
+    font-weight: bold;
+}
+
+button {
+    border: none;
+    border-radius: 12px;
+    padding: 14px 22px;
+    margin: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    background: #ff9f43;
+    color: #24130a;
+    box-shadow: 0 5px 0 #b85c00;
+}
+
+button:hover {
+    background: #ffb866;
+}
+
+button:active {
+    box-shadow: 0 2px 0 #b85c00;
+    transform: translateY(3px);
+}
+
+#cookie {
+    width: 190px;
+    height: 190px;
+    border-radius: 50%;
+    background: #b96b2c;
+    border: 12px solid #7a3f16;
+    color: #fff0c2;
+    font-size: 25px;
+    margin: 25px;
+    box-shadow: 0 10px 0 #4d260e;
+}
+
+#cookie:hover {
+    background: #c97b36;
+}
+
+#cookie:active {
+    box-shadow: 0 4px 0 #4d260e;
+    transform: translateY(6px);
+}
+
+#epstein,
+#micheal-jackson {
+    background: #6c63ff;
+    color: white;
+    box-shadow: 0 5px 0 #4038a8;
+}
+
+#epstein:hover,
+#micheal-jackson:hover {
+    background: #8179ff;
+}
+
+#special-upgrade,
+#special-upgrade-2 {
+    background: #ffd166;
+    color: #3b2800;
+    box-shadow: 0 5px 0 #b88900;
+}
+
+#special-upgrade:hover,
+#special-upgrade-2:hover {
+    background: #ffe29a;
+}
+
+#special-coins,
+#golden-count,
+#super-count {
+    color: #ffd166;
+    font-weight: bold;
+}
+
+#click-count,
+#epstein-count,
+#micheal-count {
+    color: #70e000;
+    font-weight: bold;
+}
