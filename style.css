@@ -1,5 +1,4 @@
 
-
 body {
     margin: 0;
     padding: 30px;
@@ -9,47 +8,34 @@ body {
     text-align: center;
 }
 
-/* Hoofdindeling */
 .game-layout {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) 420px;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 560px);
     gap: 40px;
     align-items: start;
     min-height: calc(100vh - 60px);
 }
 
-/* Koekje links */
 .cookie-area {
     grid-column: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: sticky;
-    top: 30px;
 }
 
-/* Rechterpaneel met scrollbalk */
 .upgrades-panel {
     grid-column: 2;
     grid-row: 1;
-
     height: calc(100vh - 60px);
-    box-sizing: border-box;
-
-    padding: 10px 20px 24px;
-
-    border-left: 2px solid #6c63ff;
-    border-radius: 12px 0 0 12px;
-
-    background: rgba(108, 99, 255, 0.12);
-
-    text-align: center;
-
     overflow-y: auto;
-    overflow-x: hidden;
+    box-sizing: border-box;
+    padding: 10px 20px 24px;
+    border-radius: 12px;
+    background: rgba(108, 99, 255, 0.12);
+    border-left: 2px solid #6c63ff;
+    text-align: center;
 }
 
-/* Fabrieken */
 .factory {
     padding: 20px 0;
     border-bottom: 2px solid #4038a8;
@@ -59,7 +45,6 @@ body {
     border-bottom: none;
 }
 
-/* Titels */
 h1 {
     font-size: 42px;
     color: #ffcc66;
@@ -75,19 +60,19 @@ p {
     font-size: 18px;
 }
 
-/* Teller */
 #counter {
     color: #ffd166;
     font-size: 28px;
     font-weight: bold;
 }
 
-#cps {
+#cps,
+#click-power,
+#click-power-display {
     color: #70e000;
     font-weight: bold;
 }
 
-/* Algemene knoppen */
 button {
     border: none;
     border-radius: 12px;
@@ -110,7 +95,6 @@ button:active {
     transform: translateY(3px);
 }
 
-/* Koekje */
 #cookie {
     width: 190px;
     height: 190px;
@@ -132,14 +116,11 @@ button:active {
     transform: translateY(6px);
 }
 
-/* Fabriek knoppen */
-.factories-panel button,
 .upgrades-panel button {
     width: 100%;
     max-width: 340px;
 }
 
-/* Fabriek kleuren */
 #epstein,
 #micheal-jackson,
 #r-kelly {
@@ -154,7 +135,6 @@ button:active {
     background: #8179ff;
 }
 
-/* Fabriek speciale upgrades */
 #epstein-upgrade,
 #micheal-upgrade,
 #r-kelly-upgrade {
@@ -169,7 +149,26 @@ button:active {
     background: #b06dcc;
 }
 
-/* Algemene upgrades */
+#crosshair-upgrade {
+    background: #00b894;
+    color: white;
+    box-shadow: 0 5px 0 #007a63;
+}
+
+#crosshair-upgrade:hover {
+    background: #00d2a8;
+}
+
+#epstein-island {
+    background: #e17055;
+    color: white;
+    box-shadow: 0 5px 0 #a0402a;
+}
+
+#epstein-island:hover {
+    background: #f08b70;
+}
+
 #special-upgrade,
 #special-upgrade-2 {
     background: #ffd166;
@@ -182,10 +181,11 @@ button:active {
     background: #ffe29a;
 }
 
-/* Teller kleuren */
 #special-coins,
 #golden-count,
-#super-count {
+#super-count,
+#crosshair-count,
+#island-count {
     color: #ffd166;
     font-weight: bold;
 }
@@ -196,12 +196,12 @@ button:active {
 #r-kelly-count,
 #epstein-cps,
 #micheal-cps,
-#r-kelly-cps {
+#r-kelly-cps,
+#island-cps {
     color: #70e000;
     font-weight: bold;
 }
 
-/* Mobiel */
 @media (max-width: 900px) {
 
     body {
@@ -214,7 +214,9 @@ button:active {
     }
 
     .cookie-area {
-        position: static;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
     }
 
     .upgrades-panel {
@@ -222,7 +224,6 @@ button:active {
         margin-top: 30px;
         border-left: none;
         border-top: 2px solid #6c63ff;
-        border-radius: 12px;
     }
 
 }

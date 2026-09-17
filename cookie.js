@@ -1,77 +1,52 @@
-
 let count = 0;
 let cookiesPerSecond = 0;
 
 let clickCount = 0;
-let specialCoins = 100;
+let specialCoins = 10000;
 
+// Cookies per klik
+let clickPower = 1;
 
-// ==========================
-// FABRIEK PRIJZEN
-// ==========================
-
+// Prijzen fabrieken
 let upgradePrice = 10;
 let michealJacksonPrice = 100;
 let rKellyPrice = 1000;
 
-
-// ==========================
-// AANTAL FABRIEKEN
-// ==========================
-
+// Aantallen fabrieken
 let epsteinCount = 0;
 let michealJacksonCount = 0;
 let rKellyCount = 0;
 
-
-// ==========================
-// PRODUCTIE PER FABRIEK
-// ==========================
-
-let epsteinProduction = 1;
-let michealJacksonProduction = 10;
-let rKellyProduction = 50;
-
-
-// ==========================
-// SPECIALE UPGRADE PRIJZEN
-// ==========================
-
-let epsteinUpgradePrice = 2;
-let michealUpgradePrice = 4;
-let rKellyUpgradePrice = 6;
-
-
-// ==========================
-// AANTAL SPECIALE UPGRADES
-// ==========================
-
+// Aantallen upgrades
 let epsteinUpgradeCount = 0;
 let michealUpgradeCount = 0;
 let rKellyUpgradeCount = 0;
 
+// Upgrade prijzen speciale coins
+let epsteinUpgradePrice = 2;
+let michealUpgradePrice = 4;
+let rKellyUpgradePrice = 6;
 
-// ==========================
-// ALGEMENE UPGRADES
-// ==========================
-
+// Speciale upgrades
 let goldenCount = 0;
 let superCount = 0;
 
+// Epstein Island
+let islandCount = 0;
+let islandBought = false;
 
-// ==========================
-// HTML ELEMENTEN
-// ==========================
+// Crosshair
+let crosshairCount = 0;
+let crosshairPrice = 1;
 
+// Elementen
 const button = document.getElementById("cookie");
 const counter = document.getElementById("counter");
 const cpsDisplay = document.getElementById("cps");
 
 const upgrade = document.getElementById("epstein");
-
 const michealJacksonUpgrade =
     document.getElementById("micheal-jackson");
-
 const rKellyUpgrade =
     document.getElementById("r-kelly");
 
@@ -90,6 +65,15 @@ const michealCountDisplay =
 const rKellyCountDisplay =
     document.getElementById("r-kelly-count");
 
+const epsteinCpsDisplay =
+    document.getElementById("epstein-cps");
+
+const michealCpsDisplay =
+    document.getElementById("micheal-cps");
+
+const rKellyCpsDisplay =
+    document.getElementById("r-kelly-cps");
+
 const specialUpgrade =
     document.getElementById("special-upgrade");
 
@@ -102,30 +86,30 @@ const goldenCountDisplay =
 const superCountDisplay =
     document.getElementById("super-count");
 
+// Crosshair elementen
+const crosshairUpgrade =
+    document.getElementById("crosshair-upgrade");
 
-// Fabriek upgrades
-const epsteinUpgradeButton =
-    document.getElementById("epstein-upgrade");
+const crosshairCountDisplay =
+    document.getElementById("crosshair-count");
 
-const michealUpgradeButton =
-    document.getElementById("micheal-upgrade");
+const clickPowerDisplay =
+    document.getElementById("click-power");
 
-const rKellyUpgradeButton =
-    document.getElementById("r-kelly-upgrade");
+const clickPowerDisplay2 =
+    document.getElementById("click-power-display");
 
+// Island elementen
+const islandUpgrade =
+    document.getElementById("epstein-island");
 
-// Productie displays
-const epsteinCpsDisplay =
-    document.getElementById("epstein-cps");
+const islandCountDisplay =
+    document.getElementById("island-count");
 
-const michealCpsDisplay =
-    document.getElementById("micheal-cps");
+const islandCpsDisplay =
+    document.getElementById("island-cps");
 
-const rKellyCpsDisplay =
-    document.getElementById("r-kelly-cps");
-
-
-// Upgrade tellers
+// Upgrade counts
 const epsteinUpgradeCountDisplay =
     document.getElementById("epstein-upgrade-count");
 
@@ -136,24 +120,7 @@ const rKellyUpgradeCountDisplay =
     document.getElementById("r-kelly-upgrade-count");
 
 
-// ==========================
-// TOTALE PRODUCTIE BEREKENEN
-// ==========================
-
-function calculateCps() {
-
-    cookiesPerSecond =
-        (epsteinCount * epsteinProduction) +
-        (michealJacksonCount * michealJacksonProduction) +
-        (rKellyCount * rKellyProduction);
-
-}
-
-
-// ==========================
-// DISPLAY UPDATEN
-// ==========================
-
+// Display bijwerken
 function updateDisplay() {
 
     counter.textContent = Math.floor(count);
@@ -176,25 +143,35 @@ function updateDisplay() {
     rKellyCountDisplay.textContent =
         rKellyCount;
 
+    epsteinCpsDisplay.textContent =
+        epsteinCount *
+        (1 + epsteinUpgradeCount);
+
+    michealCpsDisplay.textContent =
+        michealJacksonCount *
+        10 *
+        (1 + michealUpgradeCount);
+
+    rKellyCpsDisplay.textContent =
+        rKellyCount *
+        100 *
+        (1 + rKellyUpgradeCount);
+
     goldenCountDisplay.textContent =
         goldenCount;
 
     superCountDisplay.textContent =
         superCount;
 
+    crosshairCountDisplay.textContent =
+        crosshairCount;
 
-    // Productie per fabriek
-    epsteinCpsDisplay.textContent =
-        epsteinCount * epsteinProduction;
+    clickPowerDisplay.textContent =
+        clickPower;
 
-    michealCpsDisplay.textContent =
-        michealJacksonCount * michealJacksonProduction;
+    clickPowerDisplay2.textContent =
+        clickPower;
 
-    rKellyCpsDisplay.textContent =
-        rKellyCount * rKellyProduction;
-
-
-    // Upgrade tellers
     epsteinUpgradeCountDisplay.textContent =
         epsteinUpgradeCount;
 
@@ -204,21 +181,29 @@ function updateDisplay() {
     rKellyUpgradeCountDisplay.textContent =
         rKellyUpgradeCount;
 
+    islandCountDisplay.textContent =
+        islandCount;
+
+    islandCpsDisplay.textContent =
+        islandCount * 10000;
+
 }
 
 
-// ==========================
-// KOEKJE KLIKKEN
-// ==========================
-
+// Cookie klikken
 button.addEventListener("click", function() {
 
-    count++;
+    count += clickPower;
+
     clickCount++;
 
-    // Elke 1000 klikken = 1 speciale coin
+    // Speciale coin bij elke 1000 clicks.
+    // ClickPower telt mee, dus meer click kracht
+    // betekent sneller speciale coins verdienen.
     if (clickCount % 1000 === 0) {
+
         specialCoins++;
+
     }
 
     updateDisplay();
@@ -226,10 +211,7 @@ button.addEventListener("click", function() {
 });
 
 
-// ==========================
-// EPSTEIN FABRIEK KOPEN
-// ==========================
-
+// Epstein fabriek kopen
 upgrade.addEventListener("click", function() {
 
     if (count >= upgradePrice) {
@@ -238,6 +220,8 @@ upgrade.addEventListener("click", function() {
 
         epsteinCount++;
 
+        cookiesPerSecond += 1;
+
         upgradePrice *= 1.5;
 
         upgrade.textContent =
@@ -245,7 +229,6 @@ upgrade.addEventListener("click", function() {
             Math.ceil(upgradePrice) +
             " cookies)";
 
-        calculateCps();
         updateDisplay();
 
     }
@@ -253,10 +236,7 @@ upgrade.addEventListener("click", function() {
 });
 
 
-// ==========================
-// MICHEAL JACKSON FABRIEK KOPEN
-// ==========================
-
+// Michael Jackson fabriek kopen
 michealJacksonUpgrade.addEventListener(
     "click",
     function() {
@@ -267,6 +247,8 @@ michealJacksonUpgrade.addEventListener(
 
             michealJacksonCount++;
 
+            cookiesPerSecond += 10;
+
             michealJacksonPrice *= 1.5;
 
             michealJacksonUpgrade.textContent =
@@ -274,7 +256,6 @@ michealJacksonUpgrade.addEventListener(
                 Math.ceil(michealJacksonPrice) +
                 " cookies)";
 
-            calculateCps();
             updateDisplay();
 
         }
@@ -283,10 +264,7 @@ michealJacksonUpgrade.addEventListener(
 );
 
 
-// ==========================
-// R. KELLY FABRIEK KOPEN
-// ==========================
-
+// R. Kelly fabriek kopen
 rKellyUpgrade.addEventListener(
     "click",
     function() {
@@ -297,6 +275,8 @@ rKellyUpgrade.addEventListener(
 
             rKellyCount++;
 
+            cookiesPerSecond += 100;
+
             rKellyPrice *= 1.5;
 
             rKellyUpgrade.textContent =
@@ -304,7 +284,6 @@ rKellyUpgrade.addEventListener(
                 Math.ceil(rKellyPrice) +
                 " cookies)";
 
-            calculateCps();
             updateDisplay();
 
         }
@@ -313,32 +292,147 @@ rKellyUpgrade.addEventListener(
 );
 
 
-// ==========================
-// EPSTEIN SPECIALE UPGRADE
-// ==========================
+// Epstein speciale coin upgrade
+document.getElementById("epstein-upgrade")
+.addEventListener("click", function() {
 
-epsteinUpgradeButton.addEventListener(
+    if (
+        specialCoins >= epsteinUpgradePrice &&
+        epsteinCount > 0
+    ) {
+
+        specialCoins -= epsteinUpgradePrice;
+
+        epsteinUpgradeCount++;
+
+        // Upgrade verdubbelt de productie
+        cookiesPerSecond += epsteinCount;
+
+        epsteinUpgradePrice *= 1.2;
+
+        this.textContent =
+            "Upgrade Epstein (" +
+            Math.ceil(epsteinUpgradePrice) +
+            " speciale coins)";
+
+        updateDisplay();
+
+    }
+
+});
+
+
+// Michael speciale coin upgrade
+document.getElementById("micheal-upgrade")
+.addEventListener("click", function() {
+
+    if (
+        specialCoins >= michealUpgradePrice &&
+        michealJacksonCount > 0
+    ) {
+
+        specialCoins -= michealUpgradePrice;
+
+        michealUpgradeCount++;
+
+        cookiesPerSecond +=
+            michealJacksonCount * 10;
+
+        michealUpgradePrice *= 1.2;
+
+        this.textContent =
+            "Upgrade Micheal Jackson (" +
+            Math.ceil(michealUpgradePrice) +
+            " speciale coins)";
+
+        updateDisplay();
+
+    }
+
+});
+
+
+// R. Kelly speciale coin upgrade
+document.getElementById("r-kelly-upgrade")
+.addEventListener("click", function() {
+
+    if (
+        specialCoins >= rKellyUpgradePrice &&
+        rKellyCount > 0
+    ) {
+
+        specialCoins -= rKellyUpgradePrice;
+
+        rKellyUpgradeCount++;
+
+        cookiesPerSecond +=
+            rKellyCount * 100;
+
+        rKellyUpgradePrice *= 1.2;
+
+        this.textContent =
+            "Upgrade R. Kelly (" +
+            Math.ceil(rKellyUpgradePrice) +
+            " speciale coins)";
+
+        updateDisplay();
+
+    }
+
+});
+
+
+// Epstein Island kopen
+islandUpgrade.addEventListener("click", function() {
+
+    if (
+        epsteinUpgradeCount >= 10 &&
+        specialCoins >= 1 &&
+        islandBought === false
+    ) {
+
+        specialCoins--;
+
+        islandCount++;
+
+        islandBought = true;
+
+        cookiesPerSecond += 10000;
+
+        islandUpgrade.textContent =
+            "Epstein Island gekocht";
+
+        updateDisplay();
+
+    }
+
+});
+
+
+// Crosshair upgrade
+
+crosshairUpgrade.addEventListener(
     "click",
     function() {
 
-        if (specialCoins >= epsteinUpgradePrice) {
+        // Crosshair kost cookies
+        if (count >= crosshairPrice) {
 
-            specialCoins -= epsteinUpgradePrice;
+            count -= crosshairPrice;
 
-            epsteinUpgradeCount++;
+            crosshairCount++;
 
-            // Epstein productie x2
-            epsteinProduction *= 2;
+            // Elke upgrade verdubbelt de cookies per klik
+            clickPower *= 2;
 
-            // Prijs x1.2
-            epsteinUpgradePrice *= 1.2;
+            // Prijs wordt 1.5x duurder
+            crosshairPrice *= 1.5;
 
-            epsteinUpgradeButton.textContent =
-                "Upgrade Epstein (" +
-                Math.ceil(epsteinUpgradePrice) +
-                " speciale coins)";
+            crosshairUpgrade.textContent =
+                "Crosshair upgrade (" +
+                Math.ceil(crosshairPrice) +
+                " cookies)";
 
-            calculateCps();
             updateDisplay();
 
         }
@@ -347,92 +441,7 @@ epsteinUpgradeButton.addEventListener(
 );
 
 
-// ==========================
-// MICHEAL JACKSON SPECIALE UPGRADE
-// ==========================
-
-michealUpgradeButton.addEventListener(
-    "click",
-    function() {
-
-        if (specialCoins >= michealUpgradePrice) {
-
-            specialCoins -= michealUpgradePrice;
-
-            michealUpgradeCount++;
-
-            // Micheal Jackson productie x2
-            michealJacksonProduction *= 2;
-
-            // Prijs x1.2
-            michealUpgradePrice *= 1.2;
-
-            michealUpgradeButton.textContent =
-                "Upgrade Micheal Jackson (" +
-                Math.ceil(michealUpgradePrice) +
-                " speciale coins)";
-
-            calculateCps();
-            updateDisplay();
-
-        }
-
-    }
-);
-
-
-// ==========================
-// R. KELLY SPECIALE UPGRADE
-// ==========================
-
-rKellyUpgradeButton.addEventListener(
-    "click",
-    function() {
-
-        if (specialCoins >= rKellyUpgradePrice) {
-
-            specialCoins -= rKellyUpgradePrice;
-
-            rKellyUpgradeCount++;
-
-            // R. Kelly productie x2
-            rKellyProduction *= 2;
-
-            // Prijs x1.2
-            rKellyUpgradePrice *= 1.2;
-
-            rKellyUpgradeButton.textContent =
-                "Upgrade R. Kelly (" +
-                Math.ceil(rKellyUpgradePrice) +
-                " speciale coins)";
-
-            calculateCps();
-            updateDisplay();
-
-        }
-
-    }
-);
-
-
-// ==========================
-// SPECIALE COINS TIJD
-// ==========================
-
-// Elke 10 minuten 1 speciale coin
-setInterval(function() {
-
-    specialCoins++;
-
-    updateDisplay();
-
-}, 600000);
-
-
-// ==========================
-// GOUDEN COOKIE
-// ==========================
-
+// Gouden cookie
 specialUpgrade.addEventListener(
     "click",
     function() {
@@ -453,10 +462,7 @@ specialUpgrade.addEventListener(
 );
 
 
-// ==========================
-// SUPER FABRIEK
-// ==========================
-
+// Super fabriek
 specialUpgrade2.addEventListener(
     "click",
     function() {
@@ -477,10 +483,17 @@ specialUpgrade2.addEventListener(
 );
 
 
-// ==========================
-// AUTOMATISCHE PRODUCTIE
-// ==========================
+// Elke 10 minuten een speciale coin
+setInterval(function() {
 
+    specialCoins++;
+
+    updateDisplay();
+
+}, 600000);
+
+
+// Automatische productie
 setInterval(function() {
 
     count += cookiesPerSecond;
@@ -490,5 +503,5 @@ setInterval(function() {
 }, 1000);
 
 
-// Beginwaarden tonen
+// Start display
 updateDisplay();

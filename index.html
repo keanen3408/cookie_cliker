@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,7 +10,7 @@
 
     <main class="game-layout">
 
-        <!-- KOEKJE LINKS -->
+        <!-- Koekje links -->
         <section class="cookie-area">
 
             <h1>Cookie Clicker</h1>
@@ -26,19 +25,71 @@
                 <span id="cps">0</span>
             </p>
 
+            <p>
+                Cookies per klik:
+                <span id="click-power">1</span>
+            </p>
+
             <button id="cookie">
                 <img src="./charlie-cookie.png" alt="Cookie">
             </button>
 
         </section>
 
-
-        <!-- FABRIEKEN EN UPGRADES RECHTS -->
+        <!-- Fabrieken rechts met scrollbalk -->
         <aside class="upgrades-panel">
+
+            <h2>Speciale coins</h2>
+
+            <p>
+                Speciale coins:
+                <span id="special-coins">0</span>
+            </p>
+
+            <p>
+                Klikken:
+                <span id="click-count">0</span>
+            </p>
+
+            <h2>Crosshair upgrade</h2>
+
+            <button id="crosshair-upgrade">
+                Crosshair upgrade (1 cookie)
+            </button>
+
+            <p>
+                Crosshair upgrades:
+                <span id="crosshair-count">0</span>
+            </p>
+
+            <p>
+                Klik kracht:
+                <span id="click-power-display">1</span>
+            </p>
+
+            <h2>Speciale upgrades</h2>
+
+            <button id="special-upgrade">
+                Gouden cookie (5 speciale coins)
+            </button>
+
+            <p>
+                Gouden cookie upgrades:
+                <span id="golden-count">0</span>
+            </p>
+
+            <button id="special-upgrade-2">
+                Super fabriek (10 speciale coins)
+            </button>
+
+            <p>
+                Super fabriek upgrades:
+                <span id="super-count">0</span>
+            </p>
 
             <h2>Fabrieken</h2>
 
-            <!-- EPSTEIN -->
+            <!-- Epstein -->
             <div class="factory">
 
                 <button id="epstein">
@@ -67,8 +118,33 @@
 
             </div>
 
+            <!-- Epstein Island -->
+            <div class="factory">
 
-            <!-- MICHEAL JACKSON -->
+                <h2>Epstein Island</h2>
+
+                <p>
+                    Je hebt 10 Epstein upgrades nodig.
+                </p>
+
+                <button id="epstein-island">
+                    Koop Epstein Island (1 speciale coin)
+                </button>
+
+                <p>
+                    Islands:
+                    <span id="island-count">0</span>
+                </p>
+
+                <p>
+                    Productie:
+                    <span id="island-cps">0</span>
+                    cookies/sec
+                </p>
+
+            </div>
+
+            <!-- Michael Jackson -->
             <div class="factory">
 
                 <button id="micheal-jackson">
@@ -97,8 +173,7 @@
 
             </div>
 
-
-            <!-- R. KELLY -->
+            <!-- R. Kelly -->
             <div class="factory">
 
                 <button id="r-kelly">
@@ -126,42 +201,6 @@
                 </p>
 
             </div>
-
-
-            <!-- SPECIALE COINS -->
-            <h2>Speciale coins</h2>
-
-            <p>
-                Speciale coins:
-                <span id="special-coins">0</span>
-            </p>
-
-            <p>
-                Klikken:
-                <span id="click-count">0</span>
-            </p>
-
-
-            <!-- ALGEMENE UPGRADES -->
-            <h2>Speciale upgrades</h2>
-
-            <button id="special-upgrade">
-                Gouden cookie (5 speciale coins)
-            </button>
-
-            <p>
-                Gouden cookie upgrades:
-                <span id="golden-count">0</span>
-            </p>
-
-            <button id="special-upgrade-2">
-                Super fabriek (10 speciale coins)
-            </button>
-
-            <p>
-                Super fabriek upgrades:
-                <span id="super-count">0</span>
-            </p>
 
         </aside>
 
