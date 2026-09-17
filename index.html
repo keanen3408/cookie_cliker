@@ -1,44 +1,134 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="./style.css">
     <title>Cookie Clicker</title>
 </head>
 <body>
 
     <main class="game-layout">
+
+        <!-- KOEKJE LINKS -->
         <section class="cookie-area">
+
             <h1>Cookie Clicker</h1>
 
-            <p>Cookies: <span id="counter">0</span></p>
-
-            <p>Cookies per seconde: <span id="cps">0</span></p>
-
-            <button id="cookie">
-                <img src="charlie-cookie.png" alt="Cookie">
-            </button>
-        </section>
-
-        <aside class="upgrades-panel">
-            <h2>Fabrieken</h2>
-
-            <button id="epstein">
-                Epstein fabriek (10 cookies)
-            </button>
-
-            <p>Epstein fabrieken: <span id="epstein-count">0</span></p>
-
-            <button id="micheal-jackson">
-                Micheal Jackson fabriek (100 cookies)
-            </button>
-
             <p>
-                Micheal Jackson fabrieken:
-                <span id="micheal-count">0</span>
+                Cookies:
+                <span id="counter">0</span>
             </p>
 
+            <p>
+                Cookies per seconde:
+                <span id="cps">0</span>
+            </p>
+
+            <button id="cookie">
+                <img src="./charlie-cookie.png" alt="Cookie">
+            </button>
+
+        </section>
+
+
+        <!-- FABRIEKEN EN UPGRADES RECHTS -->
+        <aside class="upgrades-panel">
+
+            <h2>Fabrieken</h2>
+
+            <!-- EPSTEIN -->
+            <div class="factory">
+
+                <button id="epstein">
+                    Epstein fabriek (10 cookies)
+                </button>
+
+                <p>
+                    Epstein fabrieken:
+                    <span id="epstein-count">0</span>
+                </p>
+
+                <p>
+                    Productie:
+                    <span id="epstein-cps">0</span>
+                    cookies/sec
+                </p>
+
+                <button id="epstein-upgrade">
+                    Upgrade Epstein (2 speciale coins)
+                </button>
+
+                <p>
+                    Epstein upgrades:
+                    <span id="epstein-upgrade-count">0</span>
+                </p>
+
+            </div>
+
+
+            <!-- MICHEAL JACKSON -->
+            <div class="factory">
+
+                <button id="micheal-jackson">
+                    Micheal Jackson fabriek (100 cookies)
+                </button>
+
+                <p>
+                    Micheal Jackson fabrieken:
+                    <span id="micheal-count">0</span>
+                </p>
+
+                <p>
+                    Productie:
+                    <span id="micheal-cps">0</span>
+                    cookies/sec
+                </p>
+
+                <button id="micheal-upgrade">
+                    Upgrade Micheal Jackson (4 speciale coins)
+                </button>
+
+                <p>
+                    Micheal Jackson upgrades:
+                    <span id="micheal-upgrade-count">0</span>
+                </p>
+
+            </div>
+
+
+            <!-- R. KELLY -->
+            <div class="factory">
+
+                <button id="r-kelly">
+                    R. Kelly fabriek (1000 cookies)
+                </button>
+
+                <p>
+                    R. Kelly fabrieken:
+                    <span id="r-kelly-count">0</span>
+                </p>
+
+                <p>
+                    Productie:
+                    <span id="r-kelly-cps">0</span>
+                    cookies/sec
+                </p>
+
+                <button id="r-kelly-upgrade">
+                    Upgrade R. Kelly (6 speciale coins)
+                </button>
+
+                <p>
+                    R. Kelly upgrades:
+                    <span id="r-kelly-upgrade-count">0</span>
+                </p>
+
+            </div>
+
+
+            <!-- SPECIALE COINS -->
             <h2>Speciale coins</h2>
 
             <p>
@@ -51,6 +141,8 @@
                 <span id="click-count">0</span>
             </p>
 
+
+            <!-- ALGEMENE UPGRADES -->
             <h2>Speciale upgrades</h2>
 
             <button id="special-upgrade">
@@ -70,9 +162,12 @@
                 Super fabriek upgrades:
                 <span id="super-count">0</span>
             </p>
+
         </aside>
+
     </main>
 
-    <script src="cookie.js"></script>
+    <script src="./cookie.js"></script>
+
 </body>
 </html>
