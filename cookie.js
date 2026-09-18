@@ -193,16 +193,18 @@ function updateDisplay() {
 // Cookie klikken
 button.addEventListener("click", function() {
 
+    // Cookies per klik toevoegen
     count += clickPower;
 
-    clickCount++;
+    // ClickPower telt ook mee voor speciale coins
+    clickCount += clickPower;
 
-    // Speciale coin bij elke 1000 clicks.
-    // ClickPower telt mee, dus meer click kracht
-    // betekent sneller speciale coins verdienen.
-    if (clickCount % 1000 === 0) {
+    // Elke 1000 klikken krijg je 1 speciale coin
+    while (clickCount >= 1000) {
 
         specialCoins++;
+
+        clickCount -= 1000;
 
     }
 
