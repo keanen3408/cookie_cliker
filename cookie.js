@@ -55,14 +55,25 @@ const specialBuildings = [
         count: 0
     },
     {
+        name: "American Border",
+        buttonId: "american-border",
+        countId: "border-count",
+        cpsId: "border-cps",
+        requirementId: "border-requirement",
+        upgradeCount: () => donaldTrumpUpgradeCount,
+        cost: 5,
+        production: 14000,
+        count: 0
+    },
+    {
         name: "White House",
         buttonId: "white-house",
         countId: "white-house-count",
         cpsId: "white-house-cps",
         requirementId: "white-house-requirement",
         upgradeCount: () => donaldTrumpUpgradeCount,
-        cost: 4,
-        production: 13000,
+        cost: 6,
+        production: 15000,
         count: 0
     }
 ];
