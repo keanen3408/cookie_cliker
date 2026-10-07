@@ -31,51 +31,70 @@ let michealUpgradePrice = 4;
 let rKellyUpgradePrice = 6;
 let donaldTrumpUpgradePrice = 25;
 
-const specialBuildings = [
-    {
-        name: "Neverland",
-        buttonId: "neverland",
-        countId: "neverland-count",
-        cpsId: "neverland-cps",
-        requirementId: "neverland-requirement",
-        upgradeCount: () => michealUpgradeCount,
-        cost: 2,
-        production: 11000,
-        count: 0
-    },
-    {
-        name: "Recording Studio",
-        buttonId: "recording-studio",
-        countId: "studio-count",
-        cpsId: "studio-cps",
-        requirementId: "studio-requirement",
-        upgradeCount: () => rKellyUpgradeCount,
-        cost: 3,
-        production: 12000,
-        count: 0
-    },
-    {
-        name: "American Border",
-        buttonId: "american-border",
-        countId: "border-count",
-        cpsId: "border-cps",
-        requirementId: "border-requirement",
-        upgradeCount: () => donaldTrumpUpgradeCount,
-        cost: 5,
-        production: 14000,
-        count: 0
-    },
-    {
-        name: "White House",
-        buttonId: "white-house",
-        countId: "white-house-count",
-        cpsId: "white-house-cps",
-        requirementId: "white-house-requirement",
-        upgradeCount: () => donaldTrumpUpgradeCount,
-        cost: 6,
-        production: 15000,
-        count: 0
+class SpecialBuilding {
+    constructor(
+        name,
+        buttonId,
+        countId,
+        cpsId,
+        requirementId,
+        upgradeCount,
+        cost,
+        production
+    ) {
+        this.name = name;
+        this.buttonId = buttonId;
+        this.countId = countId;
+        this.cpsId = cpsId;
+        this.requirementId = requirementId;
+        this.upgradeCount = upgradeCount;
+        this.cost = cost;
+        this.production = production;
+        this.count = 0;
     }
+}
+
+const specialBuildings = [
+    new SpecialBuilding(
+        "Neverland",
+        "neverland",
+        "neverland-count",
+        "neverland-cps",
+        "neverland-requirement",
+        () => michealUpgradeCount,
+        2,
+        11000
+    ),
+    new SpecialBuilding(
+        "Recording Studio",
+        "recording-studio",
+        "studio-count",
+        "studio-cps",
+        "studio-requirement",
+        () => rKellyUpgradeCount,
+        3,
+        12000
+    ),
+    new SpecialBuilding(
+        "American Border",
+        "american-border",
+        "border-count",
+        "border-cps",
+        "border-requirement",
+        () => donaldTrumpUpgradeCount,
+        5,
+        14000
+    ),
+    new SpecialBuilding(
+        "White House",
+        "white-house",
+        "white-house-count",
+        "white-house-cps",
+        "white-house-requirement",
+        () => donaldTrumpUpgradeCount,
+        6,
+        15000
+    )
 ];
 
 // Speciale upgrades
