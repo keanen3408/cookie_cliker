@@ -127,7 +127,8 @@ button:active {
 
 #epstein,
 #micheal-jackson,
-#r-kelly {
+#r-kelly,
+.advanced-factory > button:first-of-type {
     background: #6c63ff;
     color: white;
     box-shadow: 0 5px 0 #4038a8;
@@ -135,13 +136,15 @@ button:active {
 
 #epstein:hover,
 #micheal-jackson:hover,
-#r-kelly:hover {
+#r-kelly:hover,
+.advanced-factory > button:first-of-type:hover {
     background: #8179ff;
 }
 
 #epstein-upgrade,
 #micheal-upgrade,
-#r-kelly-upgrade {
+#r-kelly-upgrade,
+.advanced-factory > button:nth-of-type(2) {
     background: #9b59b6;
     color: white;
     box-shadow: 0 5px 0 #663a7a;
@@ -149,8 +152,14 @@ button:active {
 
 #epstein-upgrade:hover,
 #micheal-upgrade:hover,
-#r-kelly-upgrade:hover {
+#r-kelly-upgrade:hover,
+.advanced-factory > button:nth-of-type(2):hover {
     background: #b06dcc;
+}
+
+.advanced-factory button:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
 }
 
 #crosshair-upgrade {

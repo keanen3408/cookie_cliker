@@ -27,6 +27,85 @@ let epsteinUpgradePrice = 2;
 let michealUpgradePrice = 4;
 let rKellyUpgradePrice = 6;
 
+const advancedFactories = [
+    {
+        name: "Neverland",
+        buttonId: "neverland",
+        upgradeButtonId: "neverland-upgrade",
+        countId: "neverland-count",
+        cpsId: "neverland-cps",
+        upgradeCountId: "neverland-upgrade-count",
+        requirementId: "neverland-requirement",
+        unlockAt: 50,
+        unlockCount: () => michealUpgradeCount,
+        unlockMessage: "Vereist 50 Micheal Jackson upgrades.",
+        basePrice: 100000,
+        baseCps: 1000,
+        upgradePrice: 25,
+        upgradeStrength: 3,
+        priceGrowth: 1.75,
+        upgradePriceGrowth: 1.5,
+        count: 0,
+        upgradeCount: 0
+    },
+    {
+        name: "Recording Studio",
+        buttonId: "recording-studio",
+        upgradeButtonId: "studio-upgrade",
+        countId: "studio-count",
+        cpsId: "studio-cps",
+        upgradeCountId: "studio-upgrade-count",
+        requirementId: "studio-requirement",
+        unlockAt: 50,
+        unlockCount: () => rKellyUpgradeCount,
+        unlockMessage: "Vereist 50 R. Kelly upgrades.",
+        basePrice: 1000000,
+        baseCps: 10000,
+        upgradePrice: 40,
+        upgradeStrength: 4,
+        priceGrowth: 1.8,
+        upgradePriceGrowth: 1.6,
+        count: 0,
+        upgradeCount: 0
+    },
+    {
+        name: "Donald Trump",
+        buttonId: "donald-trump",
+        upgradeButtonId: "trump-upgrade",
+        countId: "trump-count",
+        cpsId: "trump-cps",
+        upgradeCountId: "trump-upgrade-count",
+        basePrice: 10000000,
+        baseCps: 100000,
+        upgradePrice: 60,
+        upgradeStrength: 5,
+        priceGrowth: 1.85,
+        upgradePriceGrowth: 1.7,
+        count: 0,
+        upgradeCount: 0
+    },
+    {
+        name: "White House",
+        buttonId: "white-house",
+        upgradeButtonId: "white-house-upgrade",
+        countId: "white-house-count",
+        cpsId: "white-house-cps",
+        upgradeCountId: "white-house-upgrade-count",
+        requirementId: "white-house-requirement",
+        unlockAt: 50,
+        unlockCount: () => advancedFactories[2].upgradeCount,
+        unlockMessage: "Vereist 50 Donald Trump upgrades.",
+        basePrice: 100000000,
+        baseCps: 1000000,
+        upgradePrice: 100,
+        upgradeStrength: 6,
+        priceGrowth: 1.9,
+        upgradePriceGrowth: 1.8,
+        count: 0,
+        upgradeCount: 0
+    }
+];
+
 // Speciale upgrades
 let goldenCount = 0;
 let superCount = 0;
@@ -186,6 +265,51 @@ function updateDisplay() {
 
     islandCpsDisplay.textContent =
         islandCount * 10000;
+
+    advancedFactories.forEach(function(factory) {
+        const button = document.getElementById(factory.buttonId);
+        const upgradeButton =
+            document.getElementById(factory.upgradeButtonId);
+        const requirement =
+            factory.requirementId
+                ? document.getElementById(factory.requirementId)
+                : null;
+        const isUnlocked =
+            !factory.unlockCount ||
+            factory.unlockCount() >= factory.unlockAt;
+        const productionMultiplier =
+            1 + factory.upgradeCount * factory.upgradeStrength;
+
+        document.getElementById(factory.countId).textContent =
+            factory.count;
+        document.getElementById(factory.cpsId).textContent =
+            factory.count * factory.baseCps * productionMultiplier;
+        document.getElementById(factory.upgradeCountId).textContent =
+            factory.upgradeCount;
+
+        button.disabled = !isUnlocked;
+        if (isUnlocked) {
+            button.textContent =
+                factory.name +
+                " (" +
+                Math.ceil(factory.basePrice) +
+                " cookies)";
+        } else {
+            button.textContent = factory.name + " (Vergrendeld)";
+        }
+
+        if (requirement) {
+            requirement.hidden = isUnlocked;
+        }
+
+        upgradeButton.textContent =
+            "Upgrade " +
+            factory.name +
+            " (" +
+            Math.ceil(factory.upgradePrice) +
+            " speciale coins)";
+        upgradeButton.disabled = !isUnlocked || factory.count === 0;
+    });
 
 }
 
@@ -483,6 +607,46 @@ specialUpgrade2.addEventListener(
 
     }
 );
+
+advancedFactories.forEach(function(factory) {
+    const button = document.getElementById(factory.buttonId);
+    const upgradeButton =
+        document.getElementById(factory.upgradeButtonId);
+
+    button.addEventListener("click", function() {
+        if (
+            (!factory.unlockCount ||
+                factory.unlockCount() >= factory.unlockAt) &&
+            count >= factory.basePrice
+        ) {
+            count -= factory.basePrice;
+            factory.count++;
+            cookiesPerSecond +=
+                factory.baseCps *
+                (1 + factory.upgradeCount * factory.upgradeStrength);
+            factory.basePrice *= factory.priceGrowth;
+            updateDisplay();
+        }
+    });
+
+    upgradeButton.addEventListener("click", function() {
+        if (
+            (!factory.unlockCount ||
+                factory.unlockCount() >= factory.unlockAt) &&
+            factory.count > 0 &&
+            specialCoins >= factory.upgradePrice
+        ) {
+            specialCoins -= factory.upgradePrice;
+            factory.upgradeCount++;
+            cookiesPerSecond +=
+                factory.count *
+                factory.baseCps *
+                factory.upgradeStrength;
+            factory.upgradePrice *= factory.upgradePriceGrowth;
+            updateDisplay();
+        }
+    });
+});
 
 
 // Elke 10 minuten een speciale coin
