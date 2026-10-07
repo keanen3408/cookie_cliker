@@ -2,7 +2,7 @@ let count = 0;
 let cookiesPerSecond = 0;
 
 let clickCount = 0;
-let specialCoins = 10000;
+let specialCoins = 0;
 
 // Cookies per klik
 let clickPower = 1;
@@ -11,98 +11,59 @@ let clickPower = 1;
 let upgradePrice = 10;
 let michealJacksonPrice = 100;
 let rKellyPrice = 1000;
+let donaldTrumpPrice = 1000000;
 
 // Aantallen fabrieken
 let epsteinCount = 0;
 let michealJacksonCount = 0;
 let rKellyCount = 0;
+let donaldTrumpCount = 0;
 
 // Aantallen upgrades
 let epsteinUpgradeCount = 0;
 let michealUpgradeCount = 0;
 let rKellyUpgradeCount = 0;
+let donaldTrumpUpgradeCount = 0;
 
 // Upgrade prijzen speciale coins
 let epsteinUpgradePrice = 2;
 let michealUpgradePrice = 4;
 let rKellyUpgradePrice = 6;
+let donaldTrumpUpgradePrice = 25;
 
-const advancedFactories = [
+const specialBuildings = [
     {
         name: "Neverland",
         buttonId: "neverland",
-        upgradeButtonId: "neverland-upgrade",
         countId: "neverland-count",
         cpsId: "neverland-cps",
-        upgradeCountId: "neverland-upgrade-count",
         requirementId: "neverland-requirement",
-        unlockAt: 50,
-        unlockCount: () => michealUpgradeCount,
-        unlockMessage: "Vereist 50 Micheal Jackson upgrades.",
-        basePrice: 100000,
-        baseCps: 1000,
-        upgradePrice: 25,
-        upgradeStrength: 3,
-        priceGrowth: 1.75,
-        upgradePriceGrowth: 1.5,
-        count: 0,
-        upgradeCount: 0
+        upgradeCount: () => michealUpgradeCount,
+        cost: 2,
+        production: 11000,
+        count: 0
     },
     {
         name: "Recording Studio",
         buttonId: "recording-studio",
-        upgradeButtonId: "studio-upgrade",
         countId: "studio-count",
         cpsId: "studio-cps",
-        upgradeCountId: "studio-upgrade-count",
         requirementId: "studio-requirement",
-        unlockAt: 50,
-        unlockCount: () => rKellyUpgradeCount,
-        unlockMessage: "Vereist 50 R. Kelly upgrades.",
-        basePrice: 1000000,
-        baseCps: 10000,
-        upgradePrice: 40,
-        upgradeStrength: 4,
-        priceGrowth: 1.8,
-        upgradePriceGrowth: 1.6,
-        count: 0,
-        upgradeCount: 0
-    },
-    {
-        name: "Donald Trump",
-        buttonId: "donald-trump",
-        upgradeButtonId: "trump-upgrade",
-        countId: "trump-count",
-        cpsId: "trump-cps",
-        upgradeCountId: "trump-upgrade-count",
-        basePrice: 10000000,
-        baseCps: 100000,
-        upgradePrice: 60,
-        upgradeStrength: 5,
-        priceGrowth: 1.85,
-        upgradePriceGrowth: 1.7,
-        count: 0,
-        upgradeCount: 0
+        upgradeCount: () => rKellyUpgradeCount,
+        cost: 3,
+        production: 12000,
+        count: 0
     },
     {
         name: "White House",
         buttonId: "white-house",
-        upgradeButtonId: "white-house-upgrade",
         countId: "white-house-count",
         cpsId: "white-house-cps",
-        upgradeCountId: "white-house-upgrade-count",
         requirementId: "white-house-requirement",
-        unlockAt: 50,
-        unlockCount: () => advancedFactories[2].upgradeCount,
-        unlockMessage: "Vereist 50 Donald Trump upgrades.",
-        basePrice: 100000000,
-        baseCps: 1000000,
-        upgradePrice: 100,
-        upgradeStrength: 6,
-        priceGrowth: 1.9,
-        upgradePriceGrowth: 1.8,
-        count: 0,
-        upgradeCount: 0
+        upgradeCount: () => donaldTrumpUpgradeCount,
+        cost: 4,
+        production: 13000,
+        count: 0
     }
 ];
 
@@ -128,6 +89,8 @@ const michealJacksonUpgrade =
     document.getElementById("micheal-jackson");
 const rKellyUpgrade =
     document.getElementById("r-kelly");
+const donaldTrumpUpgrade =
+    document.getElementById("donald-trump");
 
 const specialCoinsDisplay =
     document.getElementById("special-coins");
@@ -222,6 +185,9 @@ function updateDisplay() {
     rKellyCountDisplay.textContent =
         rKellyCount;
 
+    document.getElementById("trump-count").textContent =
+        donaldTrumpCount;
+
     epsteinCpsDisplay.textContent =
         epsteinCount *
         (1 + epsteinUpgradeCount);
@@ -235,6 +201,11 @@ function updateDisplay() {
         rKellyCount *
         100 *
         (1 + rKellyUpgradeCount);
+
+    document.getElementById("trump-cps").textContent =
+        donaldTrumpCount *
+        100000 *
+        (1 + donaldTrumpUpgradeCount);
 
     goldenCountDisplay.textContent =
         goldenCount;
@@ -260,55 +231,40 @@ function updateDisplay() {
     rKellyUpgradeCountDisplay.textContent =
         rKellyUpgradeCount;
 
+    document.getElementById("trump-upgrade-count").textContent =
+        donaldTrumpUpgradeCount;
+    donaldTrumpUpgrade.textContent =
+        "Donald Trump (" +
+        Math.ceil(donaldTrumpPrice) +
+        " cookies)";
+    document.getElementById("trump-upgrade").textContent =
+        "Upgrade Donald Trump (" +
+        Math.ceil(donaldTrumpUpgradePrice) +
+        " speciale coins)";
+
     islandCountDisplay.textContent =
         islandCount;
 
     islandCpsDisplay.textContent =
         islandCount * 10000;
 
-    advancedFactories.forEach(function(factory) {
-        const button = document.getElementById(factory.buttonId);
-        const upgradeButton =
-            document.getElementById(factory.upgradeButtonId);
+    specialBuildings.forEach(function(building) {
+        const button = document.getElementById(building.buttonId);
         const requirement =
-            factory.requirementId
-                ? document.getElementById(factory.requirementId)
-                : null;
-        const isUnlocked =
-            !factory.unlockCount ||
-            factory.unlockCount() >= factory.unlockAt;
-        const productionMultiplier =
-            1 + factory.upgradeCount * factory.upgradeStrength;
-
-        document.getElementById(factory.countId).textContent =
-            factory.count;
-        document.getElementById(factory.cpsId).textContent =
-            factory.count * factory.baseCps * productionMultiplier;
-        document.getElementById(factory.upgradeCountId).textContent =
-            factory.upgradeCount;
-
-        button.disabled = !isUnlocked;
-        if (isUnlocked) {
-            button.textContent =
-                factory.name +
+            document.getElementById(building.requirementId);
+        document.getElementById(building.countId).textContent =
+            building.count;
+        document.getElementById(building.cpsId).textContent =
+            building.count * building.production;
+        requirement.hidden = building.upgradeCount() >= 50;
+        button.textContent = building.count > 0
+            ? building.name + " gekocht"
+            : "Koop " +
+                building.name +
                 " (" +
-                Math.ceil(factory.basePrice) +
-                " cookies)";
-        } else {
-            button.textContent = factory.name + " (Vergrendeld)";
-        }
-
-        if (requirement) {
-            requirement.hidden = isUnlocked;
-        }
-
-        upgradeButton.textContent =
-            "Upgrade " +
-            factory.name +
-            " (" +
-            Math.ceil(factory.upgradePrice) +
-            " speciale coins)";
-        upgradeButton.disabled = !isUnlocked || factory.count === 0;
+                building.cost +
+                " speciale coins)";
+        button.disabled = building.count > 0;
     });
 
 }
@@ -417,6 +373,17 @@ rKellyUpgrade.addEventListener(
     }
 );
 
+// Donald Trump factory kopen
+donaldTrumpUpgrade.addEventListener("click", function() {
+    if (count >= donaldTrumpPrice) {
+        count -= donaldTrumpPrice;
+        donaldTrumpCount++;
+        cookiesPerSecond += 100000;
+        donaldTrumpPrice *= 1.5;
+        updateDisplay();
+    }
+});
+
 
 // Epstein speciale coin upgrade
 document.getElementById("epstein-upgrade")
@@ -505,6 +472,21 @@ document.getElementById("r-kelly-upgrade")
 
     }
 
+});
+
+// Donald Trump speciale coin upgrade
+document.getElementById("trump-upgrade")
+.addEventListener("click", function() {
+    if (
+        specialCoins >= donaldTrumpUpgradePrice &&
+        donaldTrumpCount > 0
+    ) {
+        specialCoins -= donaldTrumpUpgradePrice;
+        donaldTrumpUpgradeCount++;
+        cookiesPerSecond += donaldTrumpCount * 100000;
+        donaldTrumpUpgradePrice *= 1.2;
+        updateDisplay();
+    }
 });
 
 
@@ -608,41 +590,17 @@ specialUpgrade2.addEventListener(
     }
 );
 
-advancedFactories.forEach(function(factory) {
-    const button = document.getElementById(factory.buttonId);
-    const upgradeButton =
-        document.getElementById(factory.upgradeButtonId);
-
+specialBuildings.forEach(function(building) {
+    const button = document.getElementById(building.buttonId);
     button.addEventListener("click", function() {
         if (
-            (!factory.unlockCount ||
-                factory.unlockCount() >= factory.unlockAt) &&
-            count >= factory.basePrice
+            building.count === 0 &&
+            building.upgradeCount() >= 50 &&
+            specialCoins >= building.cost
         ) {
-            count -= factory.basePrice;
-            factory.count++;
-            cookiesPerSecond +=
-                factory.baseCps *
-                (1 + factory.upgradeCount * factory.upgradeStrength);
-            factory.basePrice *= factory.priceGrowth;
-            updateDisplay();
-        }
-    });
-
-    upgradeButton.addEventListener("click", function() {
-        if (
-            (!factory.unlockCount ||
-                factory.unlockCount() >= factory.unlockAt) &&
-            factory.count > 0 &&
-            specialCoins >= factory.upgradePrice
-        ) {
-            specialCoins -= factory.upgradePrice;
-            factory.upgradeCount++;
-            cookiesPerSecond +=
-                factory.count *
-                factory.baseCps *
-                factory.upgradeStrength;
-            factory.upgradePrice *= factory.upgradePriceGrowth;
+            specialCoins -= building.cost;
+            building.count = 1;
+            cookiesPerSecond += building.production;
             updateDisplay();
         }
     });

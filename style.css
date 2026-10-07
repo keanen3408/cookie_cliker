@@ -60,6 +60,17 @@ h2 {
     margin-top: 35px;
 }
 
+h3 {
+    color: #ff9f43;
+    margin: 28px 0 12px;
+    padding-top: 18px;
+    border-top: 1px solid #4038a8;
+}
+
+.advanced-factory {
+    margin-top: 24px;
+}
+
 p {
     font-size: 18px;
 }
@@ -128,6 +139,7 @@ button:active {
 #epstein,
 #micheal-jackson,
 #r-kelly,
+#donald-trump,
 .advanced-factory > button:first-of-type {
     background: #6c63ff;
     color: white;
@@ -137,6 +149,7 @@ button:active {
 #epstein:hover,
 #micheal-jackson:hover,
 #r-kelly:hover,
+#donald-trump:hover,
 .advanced-factory > button:first-of-type:hover {
     background: #8179ff;
 }
@@ -144,6 +157,7 @@ button:active {
 #epstein-upgrade,
 #micheal-upgrade,
 #r-kelly-upgrade,
+#trump-upgrade,
 .advanced-factory > button:nth-of-type(2) {
     background: #9b59b6;
     color: white;
@@ -153,13 +167,9 @@ button:active {
 #epstein-upgrade:hover,
 #micheal-upgrade:hover,
 #r-kelly-upgrade:hover,
+#trump-upgrade:hover,
 .advanced-factory > button:nth-of-type(2):hover {
     background: #b06dcc;
-}
-
-.advanced-factory button:disabled {
-    cursor: not-allowed;
-    opacity: 0.55;
 }
 
 #crosshair-upgrade {
@@ -210,6 +220,11 @@ button:active {
 #epstein-cps,
 #micheal-cps,
 #r-kelly-cps,
+#trump-cps,
+#neverland-cps,
+#studio-cps,
+#trump-cps,
+#white-house-cps,
 #island-cps {
     color: #70e000;
     font-weight: bold;
