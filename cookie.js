@@ -1,12 +1,18 @@
-let count = 0;
-let cookiesPerSecond = 0;
 
+<<<<<<< HEAD
 let clickCount = 0;
 let specialCoins = 0;
+=======
+/* =========================================
+   FACTORY CLASS
+========================================= */
+ 
+class Factory {
+>>>>>>> origin/main
 
-// Cookies per klik
-let clickPower = 1;
+    constructor(name, price, production, buttonId, countId, cpsId) {
 
+<<<<<<< HEAD
 // Prijzen fabrieken
 let upgradePrice = 10;
 let michealJacksonPrice = 100;
@@ -190,48 +196,59 @@ const michealUpgradeCountDisplay =
 
 const rKellyUpgradeCountDisplay =
     document.getElementById("r-kelly-upgrade-count");
+=======
+        this.name = name;
+        this.price = price;
+        this.production = production;
+
+        this.buttonId = buttonId;
+        this.countId = countId;
+        this.cpsId = cpsId;
+
+        this.count = 0;
+        this.upgradeCount = 0;
+    }
+>>>>>>> origin/main
 
 
-// Display bijwerken
-function updateDisplay() {
+    // Fabriek kopen
+    buy(game) {
 
-    counter.textContent = Math.floor(count);
+        if (game.cookies >= this.price) {
 
-    cpsDisplay.textContent =
-        cookiesPerSecond.toFixed(1);
+            game.cookies -= this.price;
 
-    specialCoinsDisplay.textContent =
-        specialCoins;
+            this.count++;
 
-    clickCountDisplay.textContent =
-        clickCount;
+            // Volgende fabriek wordt 1.5x duurder
+            this.price *= 1.5;
 
-    epsteinCountDisplay.textContent =
-        epsteinCount;
+            game.updateDisplay();
+        }
+    }
 
-    michealCountDisplay.textContent =
-        michealJacksonCount;
 
-    rKellyCountDisplay.textContent =
-        rKellyCount;
+    // Productie berekenen
+    getCps() {
 
+<<<<<<< HEAD
     document.getElementById("trump-count").textContent =
         donaldTrumpCount;
 
     epsteinCpsDisplay.textContent =
         epsteinCount *
         (1 + epsteinUpgradeCount);
+=======
+        return this.count *
+            this.production *
+            (1 + this.upgradeCount);
+    }
+}
+>>>>>>> origin/main
 
-    michealCpsDisplay.textContent =
-        michealJacksonCount *
-        10 *
-        (1 + michealUpgradeCount);
 
-    rKellyCpsDisplay.textContent =
-        rKellyCount *
-        100 *
-        (1 + rKellyUpgradeCount);
 
+<<<<<<< HEAD
     document.getElementById("trump-cps").textContent =
         donaldTrumpCount *
         100000 *
@@ -239,28 +256,30 @@ function updateDisplay() {
 
     goldenCountDisplay.textContent =
         goldenCount;
+=======
+/* =========================================
+   UPGRADE CLASS
+========================================= */
+>>>>>>> origin/main
 
-    superCountDisplay.textContent =
-        superCount;
+class Upgrade {
 
-    crosshairCountDisplay.textContent =
-        crosshairCount;
+    constructor(name, price, buttonId, factory = null) {
 
-    clickPowerDisplay.textContent =
-        clickPower;
+        this.name = name;
+        this.price = price;
+        this.buttonId = buttonId;
 
-    clickPowerDisplay2.textContent =
-        clickPower;
+        this.factory = factory;
 
-    epsteinUpgradeCountDisplay.textContent =
-        epsteinUpgradeCount;
+        this.count = 0;
+    }
 
-    michealUpgradeCountDisplay.textContent =
-        michealUpgradeCount;
 
-    rKellyUpgradeCountDisplay.textContent =
-        rKellyUpgradeCount;
+    // Upgrade kopen
+    buy(game) {
 
+<<<<<<< HEAD
     document.getElementById("trump-upgrade-count").textContent =
         donaldTrumpUpgradeCount;
     donaldTrumpUpgrade.textContent =
@@ -274,9 +293,618 @@ function updateDisplay() {
 
     islandCountDisplay.textContent =
         islandCount;
+=======
+        if (game.specialCoins >= this.price) {
+>>>>>>> origin/main
 
-    islandCpsDisplay.textContent =
-        islandCount * 10000;
+            // Speciale coins betalen
+            game.specialCoins -= this.price;
+
+            // Upgrade aantal verhogen
+            this.count++;
+
+            // Fabriek sterker maken
+            if (this.factory !== null) {
+
+                this.factory.upgradeCount++;
+            }
+
+            // Volgende upgrade wordt 1.2x duurder
+            this.price *= 1.2;
+
+            game.updateDisplay();
+        }
+    }
+}
+
+
+
+/* =========================================
+   CROSSHAIR UPGRADE CLASS
+   ERFT VAN UPGRADE
+========================================= */
+
+class CrosshairUpgrade extends Upgrade {
+
+    constructor() {
+
+        super(
+            "Crosshair",
+            1,
+            "crosshair-upgrade"
+        );
+
+        this.cookiePrice = 1;
+    }
+
+
+    buy(game) {
+
+        if (game.cookies >= this.cookiePrice) {
+
+            // Cookies betalen
+            game.cookies -= this.cookiePrice;
+
+            // Upgrade aantal verhogen
+            this.count++;
+
+            // Cookies per klik verdubbelen
+            game.clickPower *= 2;
+
+            // Volgende upgrade wordt 1.5x duurder
+            this.cookiePrice *= 2.5;
+
+            game.updateDisplay();
+        }
+    }
+}
+
+
+
+/* =========================================
+   EPSTEIN ISLAND CLASS
+========================================= */
+
+class Island {
+
+    constructor() {
+
+        this.count = 0;
+
+        this.price = 1;
+
+        this.production = 10000;
+
+        this.bought = false;
+    }
+
+
+    buy(game) {
+
+        if (
+            game.epstein.upgradeCount >= 10 &&
+            game.specialCoins >= this.price &&
+            this.bought === false
+        ) {
+
+            game.specialCoins -= this.price;
+
+            this.count++;
+
+            this.bought = true;
+
+            game.updateDisplay();
+        }
+    }
+
+
+    getCps() {
+
+        return this.count * this.production;
+    }
+}
+
+
+
+/* =========================================
+   GAME CLASS
+========================================= */
+
+class Game {
+
+    constructor() {
+
+        // Cookies
+        this.cookies = 0;
+
+        // Speciale coins
+        this.specialCoins = 10000;
+
+        // Klikken
+        this.clickCount = 0;
+
+        this.clickPower = 1;
+
+
+        /* =================================
+           FABRIEKEN
+        ================================= */
+
+        this.epstein = new Factory(
+            "Epstein",
+            10,
+            1,
+            "epstein",
+            "epstein-count",
+            "epstein-cps"
+        );
+
+
+        this.micheal = new Factory(
+            "Micheal Jackson",
+            100,
+            10,
+            "micheal-jackson",
+            "micheal-count",
+            "micheal-cps"
+        );
+
+
+        this.rKelly = new Factory(
+            "R. Kelly",
+            1000,
+            100,
+            "r-kelly",
+            "r-kelly-count",
+            "r-kelly-cps"
+        );
+
+
+
+        /* =================================
+           FABRIEK UPGRADES
+        ================================= */
+
+        this.epsteinUpgrade = new Upgrade(
+            "Epstein Upgrade",
+            2,
+            "epstein-upgrade",
+            this.epstein
+        );
+
+
+        this.michealUpgrade = new Upgrade(
+            "Micheal Upgrade",
+            4,
+            "micheal-upgrade",
+            this.micheal
+        );
+
+
+        this.rKellyUpgrade = new Upgrade(
+            "R. Kelly Upgrade",
+            6,
+            "r-kelly-upgrade",
+            this.rKelly
+        );
+
+
+
+        /* =================================
+           SPECIALE UPGRADES
+        ================================= */
+
+        this.golden = new Upgrade(
+            "Gouden cookie",
+            5,
+            "special-upgrade"
+        );
+
+
+        this.superFactory = new Upgrade(
+            "Super fabriek",
+            10,
+            "special-upgrade-2"
+        );
+
+
+
+        /* =================================
+           CROSSHAIR
+        ================================= */
+
+        this.crosshair = new CrosshairUpgrade();
+
+
+
+        /* =================================
+           ISLAND
+        ================================= */
+
+        this.island = new Island();
+
+
+
+        // Events koppelen
+        this.setupEvents();
+
+        // Display starten
+        this.updateDisplay();
+    }
+
+
+
+    /* =================================
+       TOTALE COOKIES PER SECOND
+    ================================= */
+
+    getCps() {
+
+        return (
+
+            this.epstein.getCps() +
+
+            this.micheal.getCps() +
+
+            this.rKelly.getCps() +
+
+            this.island.getCps() +
+
+            this.golden.count * 5 +
+
+            this.superFactory.count * 50
+
+        );
+    }
+
+
+
+    /* =================================
+       COOKIE KLIKKEN
+    ================================= */
+
+    clickCookie() {
+
+        // Cookies toevoegen
+        this.cookies += this.clickPower;
+
+
+        // ClickPower telt mee voor speciale coins
+        this.clickCount += this.clickPower;
+
+
+        // Elke 1000 klikken = 1 speciale coin
+        while (this.clickCount >= 1000) {
+
+            this.specialCoins++;
+
+            this.clickCount -= 1000;
+        }
+
+
+        this.updateDisplay();
+    }
+
+
+
+    /* =================================
+       EVENTS
+    ================================= */
+
+    setupEvents() {
+
+
+        // Cookie klikken
+        document.getElementById("cookie")
+            .addEventListener("click", () => {
+
+                this.clickCookie();
+
+            });
+
+
+
+        // Epstein fabriek
+        document.getElementById("epstein")
+            .addEventListener("click", () => {
+
+                this.epstein.buy(this);
+
+            });
+
+
+
+        // Micheal Jackson fabriek
+        document.getElementById("micheal-jackson")
+            .addEventListener("click", () => {
+
+                this.micheal.buy(this);
+
+            });
+
+
+
+        // R. Kelly fabriek
+        document.getElementById("r-kelly")
+            .addEventListener("click", () => {
+
+                this.rKelly.buy(this);
+
+            });
+
+
+
+        // Epstein upgrade
+        document.getElementById("epstein-upgrade")
+            .addEventListener("click", () => {
+
+                this.epsteinUpgrade.buy(this);
+
+            });
+
+
+
+        // Micheal Jackson upgrade
+        document.getElementById("micheal-upgrade")
+            .addEventListener("click", () => {
+
+                this.michealUpgrade.buy(this);
+
+            });
+
+
+
+        // R. Kelly upgrade
+        document.getElementById("r-kelly-upgrade")
+            .addEventListener("click", () => {
+
+                this.rKellyUpgrade.buy(this);
+
+            });
+
+
+
+        // Gouden cookie
+        document.getElementById("special-upgrade")
+            .addEventListener("click", () => {
+
+                this.golden.buy(this);
+
+            });
+
+
+
+        // Super fabriek
+        document.getElementById("special-upgrade-2")
+            .addEventListener("click", () => {
+
+                this.superFactory.buy(this);
+
+            });
+
+
+
+        // Crosshair
+        document.getElementById("crosshair-upgrade")
+            .addEventListener("click", () => {
+
+                this.crosshair.buy(this);
+
+            });
+
+
+
+        // Epstein Island
+        document.getElementById("epstein-island")
+            .addEventListener("click", () => {
+
+                this.island.buy(this);
+
+            });
+
+    }
+
+
+
+    /* =================================
+       DISPLAY BIJWERKEN
+    ================================= */
+
+    updateDisplay() {
+
+
+        // Cookies
+        document.getElementById("counter").textContent =
+            Math.floor(this.cookies);
+
+
+        // Cookies per seconde
+        document.getElementById("cps").textContent =
+            this.getCps().toFixed(1);
+
+
+        // Speciale coins
+        document.getElementById("special-coins").textContent =
+            this.specialCoins;
+
+
+        // Klikken
+        document.getElementById("click-count").textContent =
+            this.clickCount;
+
+
+        // Klik kracht
+        document.getElementById("click-power").textContent =
+            this.clickPower;
+
+
+        document.getElementById("click-power-display").textContent =
+            this.clickPower;
+
+
+
+        /* ================================
+           FABRIEKEN
+        ================================= */
+
+
+        this.updateFactory(this.epstein);
+
+        this.updateFactory(this.micheal);
+
+        this.updateFactory(this.rKelly);
+
+
+
+        /* ================================
+           FABRIEK UPGRADES
+        ================================= */
+
+
+        document.getElementById("epstein-upgrade-count").textContent =
+            this.epsteinUpgrade.count;
+
+
+        document.getElementById("micheal-upgrade-count").textContent =
+            this.michealUpgrade.count;
+
+
+        document.getElementById("r-kelly-upgrade-count").textContent =
+            this.rKellyUpgrade.count;
+
+
+
+        // Epstein upgrade knop
+        document.getElementById("epstein-upgrade").textContent =
+
+            `Upgrade Epstein (${Math.ceil(this.epsteinUpgrade.price)} speciale coins)`;
+
+
+
+        // Micheal upgrade knop
+        document.getElementById("micheal-upgrade").textContent =
+
+            `Upgrade Micheal Jackson (${Math.ceil(this.michealUpgrade.price)} speciale coins)`;
+
+
+
+        // R. Kelly upgrade knop
+        document.getElementById("r-kelly-upgrade").textContent =
+
+            `Upgrade R. Kelly (${Math.ceil(this.rKellyUpgrade.price)} speciale coins)`;
+
+
+
+        /* ================================
+           SPECIALE UPGRADES
+        ================================= */
+
+
+        document.getElementById("golden-count").textContent =
+            this.golden.count;
+
+
+        document.getElementById("super-count").textContent =
+            this.superFactory.count;
+
+
+
+        /* ================================
+           CROSSHAIR
+        ================================= */
+
+
+        document.getElementById("crosshair-count").textContent =
+            this.crosshair.count;
+
+
+        document.getElementById("crosshair-upgrade").textContent =
+
+            `Crosshair upgrade (${Math.ceil(this.crosshair.cookiePrice)} cookies)`;
+
+
+
+        /* ================================
+           ISLAND
+        ================================= */
+
+
+        document.getElementById("island-count").textContent =
+            this.island.count;
+
+
+        document.getElementById("island-cps").textContent =
+            this.island.getCps();
+
+
+        document.getElementById("epstein-island").textContent =
+
+            this.island.bought
+
+                ? "Epstein Island gekocht"
+
+                : "Koop Epstein Island (1 speciale coin)";
+
+    }
+
+
+
+    /* =================================
+       FABRIEK DISPLAY
+    ================================= */
+
+    updateFactory(factory) {
+
+
+        document.getElementById(factory.countId).textContent =
+            factory.count;
+
+
+        document.getElementById(factory.cpsId).textContent =
+            factory.getCps();
+
+
+        document.getElementById(factory.buttonId).textContent =
+
+            `${factory.name} fabriek (${Math.ceil(factory.price)} cookies)`;
+
+    }
+
+
+
+    /* =================================
+       AUTOMATISCHE PRODUCTIE
+    ================================= */
+
+    startProduction() {
+
+        setInterval(() => {
+
+            this.cookies += this.getCps();
+
+            this.updateDisplay();
+
+        }, 1000);
+
+    }
+
+
+
+    /* =================================
+       SPECIALE COINS TIMER
+    ================================= */
+
+    startSpecialCoins() {
+
+        setInterval(() => {
+
+            this.specialCoins++;
+
+            this.updateDisplay();
+
+        }, 600000);
+
+    }
 
     specialBuildings.forEach(function(building) {
         const button = document.getElementById(building.buttonId);
@@ -300,18 +928,16 @@ function updateDisplay() {
 }
 
 
-// Cookie klikken
-button.addEventListener("click", function() {
 
-    // Cookies per klik toevoegen
-    count += clickPower;
+/* =========================================
+   SPEL STARTEN
+========================================= */
 
-    // ClickPower telt ook mee voor speciale coins
-    clickCount += clickPower;
+const game = new Game();
 
-    // Elke 1000 klikken krijg je 1 speciale coin
-    while (clickCount >= 1000) {
+game.startProduction();
 
+<<<<<<< HEAD
         specialCoins++;
 
         clickCount -= 1000;
@@ -659,3 +1285,6 @@ setInterval(function() {
 
 // Start display
 updateDisplay();
+=======
+game.startSpecialCoins();
+>>>>>>> origin/main
