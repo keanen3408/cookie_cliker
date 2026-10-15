@@ -49,7 +49,6 @@ class CrosshairUpgrade extends Upgrade {
 
     buy(game) {
         if (game.cookies < this.cookiePrice) return;
-
         game.cookies -= this.cookiePrice;
         this.count++;
         game.clickPower *= 2;
@@ -158,6 +157,30 @@ class Game {
         this.updateDisplay();
     }
 
+    // Grote getallen afkorten naar k, M, B, T, Qa en Qi.
+    formatNumber(number) {
+        if (!Number.isFinite(number)) return "0";
+
+        const units = ["k", "M", "B", "T", "Qa", "Qi"];
+        const sign = number < 0 ? "-" : "";
+        number = Math.abs(number);
+
+        if (number < 1000) {
+            return sign + (Number.isInteger(number)
+                ? number
+                : number.toFixed(1));
+        }
+
+        let index = -1;
+
+        do {
+            number /= 1000;
+            index++;
+        } while (number >= 1000 && index < units.length - 1);
+
+        return sign + number.toFixed(1).replace(/\.0$/, "") + units[index];
+    }
+
     getCps() {
         return this.epstein.getCps() +
             this.micheal.getCps() +
@@ -166,7 +189,8 @@ class Game {
             this.island.getCps() +
             this.bonusCps +
             this.specialBuildings.reduce(
-                (total, building) => total + building.count * building.production, 0
+                (total, building) =>
+                    total + building.count * building.production, 0
             );
     }
 
@@ -195,15 +219,22 @@ class Game {
     setupEvents() {
         this.on("cookie", () => this.clickCookie());
 
-        [
-            this.epstein, this.micheal, this.rKelly, this.trump
-        ].forEach(factory => this.on(factory.buttonId, () => factory.buy(this)));
+        [this.epstein, this.micheal, this.rKelly, this.trump]
+            .forEach(factory =>
+                this.on(factory.buttonId, () => factory.buy(this))
+            );
 
         [
-            this.epsteinUpgrade, this.michealUpgrade,
-            this.rKellyUpgrade, this.trumpUpgrade,
-            this.golden, this.superFactory, this.crosshair
-        ].forEach(upgrade => this.on(upgrade.buttonId, () => upgrade.buy(this)));
+            this.epsteinUpgrade,
+            this.michealUpgrade,
+            this.rKellyUpgrade,
+            this.trumpUpgrade,
+            this.golden,
+            this.superFactory,
+            this.crosshair
+        ].forEach(upgrade =>
+            this.on(upgrade.buttonId, () => upgrade.buy(this))
+        );
 
         this.on("epstein-island", () => this.island.buy(this));
 
@@ -213,24 +244,43 @@ class Game {
     }
 
     updateFactory(factory) {
-        this.setText(factory.countId, factory.count);
-        this.setText(factory.cpsId, factory.getCps());
+        this.setText(factory.countId,
+            this.formatNumber(factory.count));
+
+        this.setText(factory.cpsId,
+            this.formatNumber(factory.getCps()));
+
         this.setText(factory.buttonId,
-            `${factory.name} fabriek (${Math.ceil(factory.price)} cookies)`);
+            `${factory.name} fabriek (${this.formatNumber(
+                Math.ceil(factory.price)
+            )} cookies)`);
     }
 
     updateUpgrade(upgrade, label) {
         this.setText(upgrade.buttonId,
-            `${label} (${Math.ceil(upgrade.price)} speciale coins)`);
+            `${label} (${this.formatNumber(
+                Math.ceil(upgrade.price)
+            )} speciale coins)`);
     }
 
     updateDisplay() {
-        this.setText("counter", Math.floor(this.cookies));
-        this.setText("cps", this.getCps().toFixed(1));
-        this.setText("special-coins", this.specialCoins);
-        this.setText("click-count", this.clickCount);
-        this.setText("click-power", this.clickPower);
-        this.setText("click-power-display", this.clickPower);
+        this.setText("counter",
+            this.formatNumber(Math.floor(this.cookies)));
+
+        this.setText("cps",
+            this.formatNumber(this.getCps()));
+
+        this.setText("special-coins",
+            this.formatNumber(this.specialCoins));
+
+        this.setText("click-count",
+            this.formatNumber(this.clickCount));
+
+        this.setText("click-power",
+            this.formatNumber(this.clickPower));
+
+        this.setText("click-power-display",
+            this.formatNumber(this.clickPower));
 
         [this.epstein, this.micheal, this.rKelly, this.trump]
             .forEach(factory => this.updateFactory(factory));
@@ -241,40 +291,70 @@ class Game {
             [this.rKellyUpgrade, "R. Kelly"],
             [this.trumpUpgrade, "Donald Trump"]
         ].forEach(([upgrade, name]) => {
-            this.setText(upgrade.buttonId + "-count", upgrade.count);
+            this.setText(upgrade.buttonId + "-count",
+                this.formatNumber(upgrade.count));
+
             this.updateUpgrade(upgrade, "Upgrade " + name);
         });
 
-        this.setText("golden-count", this.golden.count);
-        this.setText("super-count", this.superFactory.count);
+        this.setText("golden-count",
+            this.formatNumber(this.golden.count));
+
+        this.setText("super-count",
+            this.formatNumber(this.superFactory.count));
+
         this.setText("special-upgrade",
-            `Gouden cookie (${this.golden.price} speciale coins)`);
+            `Gouden cookie (${this.formatNumber(
+                this.golden.price
+            )} speciale coins)`);
+
         this.setText("special-upgrade-2",
-            `Super fabriek (${this.superFactory.price} speciale coins)`);
+            `Super fabriek (${this.formatNumber(
+                this.superFactory.price
+            )} speciale coins)`);
 
-        this.setText("crosshair-count", this.crosshair.count);
+        this.setText("crosshair-count",
+            this.formatNumber(this.crosshair.count));
+
         this.setText("crosshair-upgrade",
-            `Crosshair upgrade (${this.crosshair.cookiePrice} cookies)`);
+            `Crosshair upgrade (${this.formatNumber(
+                this.crosshair.cookiePrice
+            )} cookies)`);
 
-        this.setText("island-count", this.island.count);
-        this.setText("island-cps", this.island.getCps());
+        this.setText("island-count",
+            this.formatNumber(this.island.count));
+
+        this.setText("island-cps",
+            this.formatNumber(this.island.getCps()));
+
         this.setText("epstein-island", this.island.bought
             ? "Epstein Island gekocht"
-            : `Koop Epstein Island (1 speciale coin; 10 Epstein-upgrades nodig)`);
+            : "Koop Epstein Island (1 speciale coin; 10 Epstein-upgrades nodig)");
 
         this.specialBuildings.forEach(building => {
-            this.setText(building.countId, building.count);
-            this.setText(building.cpsId, building.count * building.production);
+            this.setText(building.countId,
+                this.formatNumber(building.count));
 
-            const requirement = document.getElementById(building.requirementId);
+            this.setText(building.cpsId,
+                this.formatNumber(
+                    building.count * building.production
+                ));
+
+            const requirement =
+                document.getElementById(building.requirementId);
+
             if (requirement) {
                 requirement.textContent =
-                    `${building.name}: ${building.requirement()}/50 vereiste upgrades`;
+                    `${building.name}: ${this.formatNumber(
+                        building.requirement()
+                    )}/50 vereiste upgrades`;
             }
 
             this.setText(building.buttonId, building.count
                 ? `${building.name} gekocht`
-                : `Koop ${building.name} (${building.cost} speciale coins)`);
+                : `Koop ${building.name} (${this.formatNumber(
+                    building.cost
+                )} speciale coins)`);
         });
     }
 
