@@ -1,11 +1,17 @@
-
-body {
+html, body {
     margin: 0;
-    padding: 30px 0 30px 30px;
-    background: #1e1633;
-    color: #fff4d6;
+    min-height: 100%;
+    background: var(--page-bg, #1e1633);
+    color: var(--text-color, #fff4d6);
     font-family: Arial, sans-serif;
     text-align: center;
+    transition: background .3s, color .3s;
+}
+
+body {
+    padding: 30px;
+    box-sizing: border-box;
+    min-height: 100vh;
 }
 
 .game-layout {
@@ -20,7 +26,11 @@ body {
     grid-column: 1;
     min-height: calc(100vh - 60px);
     box-sizing: border-box;
-    background: url("./red-moon-tree.png") center center / cover no-repeat;
+    background-color: var(--page-bg, #1e1633);
+    background-image: url("./red-moon-tree.png");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -34,9 +44,10 @@ body {
     box-sizing: border-box;
     padding: 10px 20px 24px;
     border-radius: 12px;
-    background: #241329;
+    background: var(--panel-bg, #241329);
     border-left: 3px solid #a83f52;
-    box-shadow: -12px 0 28px rgba(10, 3, 12, 0.45), inset 10px 0 24px rgba(10, 3, 12, 0.22);
+    box-shadow: -12px 0 28px rgba(10, 3, 12, .45),
+                inset 10px 0 24px rgba(10, 3, 12, .22);
     text-align: center;
 }
 
@@ -99,15 +110,21 @@ button {
     background: #ff9f43;
     color: #24130a;
     box-shadow: 0 5px 0 #b85c00;
+    transition: background .2s, transform .1s;
 }
 
-button:hover {
+button:hover:not(:disabled) {
     background: #ffb866;
 }
 
 button:active {
     box-shadow: 0 2px 0 #b85c00;
     transform: translateY(3px);
+}
+
+button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
 }
 
 #cookie {
@@ -118,6 +135,7 @@ button:active {
     background: transparent;
     border: none;
     margin: 25px;
+    box-shadow: none;
 }
 
 #cookie img {
@@ -128,7 +146,7 @@ button:active {
 }
 
 #cookie:active {
-    transform: translateY(6px);
+    transform: translateY(6px) scale(.96);
 }
 
 .upgrades-panel button {
@@ -208,32 +226,252 @@ button:active {
 #golden-count,
 #super-count,
 #crosshair-count,
-#island-count {
-    color: #ffd166;
-    font-weight: bold;
-}
-
+#island-count,
 #click-count,
 #epstein-count,
 #micheal-count,
 #r-kelly-count,
+#trump-count,
 #epstein-cps,
 #micheal-cps,
 #r-kelly-cps,
 #trump-cps,
 #neverland-cps,
 #studio-cps,
-#trump-cps,
-#white-house-cps,
-#island-cps {
+#white-house-cps {
     color: #70e000;
     font-weight: bold;
 }
 
-@media (max-width: 900px) {
+/* EXTRA EENHEDEN */
 
+#extra-game-panel {
+    margin: 24px auto;
+    padding: 20px;
+    max-width: 1100px;
+    box-sizing: border-box;
+    border-radius: 18px;
+    background: var(--panel-bg, #302548);
+    color: var(--text-color, #fff4d6);
+    border: 2px solid rgba(255, 159, 67, .35);
+}
+
+.extra-units-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 14px;
+}
+
+.extra-unit-card,
+.theme-box {
+    padding: 15px;
+    min-width: 0;
+    border-radius: 14px;
+    background: var(--card-bg, #241b38);
+    color: var(--text-color, #fff4d6);
+    box-sizing: border-box;
+}
+
+.extra-unit-card h3 {
+    margin-top: 10px;
+}
+
+.extra-unit-card p,
+#theme-status {
+    font-size: 16px;
+}
+
+#extra-game-panel button {
+    margin: 8px 3px;
+    padding: 12px;
+    border: none;
+    border-radius: 9px;
+    cursor: pointer;
+    background: #8b6ce0;
+    color: white;
+    box-shadow: 0 4px 0 #5940a0;
+}
+
+#extra-game-panel button:hover:not(:disabled) {
+    background: #a38aef;
+}
+
+#extra-game-panel button:active {
+    transform: translateY(2px);
+}
+
+#extra-game-panel button:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+}
+
+.extra-unit-card button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* THEMA MENU */
+
+.theme-box {
+    margin-top: 24px;
+    padding: 20px;
+}
+
+.theme-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+}
+
+.theme-buttons button {
+    flex: 1 1 180px;
+    max-width: 260px;
+}
+
+/* VLIEGENDE KOEKJES */
+
+.flying-cookie {
+    position: fixed;
+    z-index: 99999;
+    pointer-events: none;
+    font-size: 20px;
+    animation: cookieFly .9s ease-out forwards;
+}
+
+@keyframes cookieFly {
+    0% {
+        transform: translateY(0) scale(.6) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-100px) scale(1.25) rotate(160deg);
+        opacity: 0;
+    }
+}
+
+/* CANDY THEMA - ROZE BLOESEMS */
+
+body[data-theme="candy"] {
+    --page-bg: #ffe0f0;
+    --panel-bg: rgba(60, 15, 50, .92);
+    --card-bg: #fff0f8;
+    --text-color: #57204a;
+    background-color: #ffe0f0;
+    background-image: url("./blosem.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+body[data-theme="candy"] .cookie-area {
+    background: transparent;
+}
+
+body[data-theme="candy"] h1,
+body[data-theme="candy"] h2,
+body[data-theme="candy"] h3 {
+    color: #ffb8dc;
+}
+
+body[data-theme="candy"] .upgrades-panel,
+body[data-theme="candy"] #extra-game-panel {
+    background: var(--panel-bg);
+    color: white;
+}
+
+body[data-theme="candy"] .extra-unit-card,
+body[data-theme="candy"] .theme-box {
+    background: var(--card-bg);
+    color: #57204a;
+}
+
+/* OCEAN THEMA - ZEE BIJ ZONSONDERGANG */
+
+body[data-theme="ocean"] {
+    --page-bg: #d9f6ff;
+    --panel-bg: rgba(3, 35, 60, .92);
+    --card-bg: #e9fbff;
+    --text-color: #063b56;
+    background-color: #063b56;
+    background-image: url("./ocean.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+body[data-theme="ocean"] .cookie-area {
+    background: transparent;
+}
+
+body[data-theme="ocean"] h1,
+body[data-theme="ocean"] h2,
+body[data-theme="ocean"] h3 {
+    color: #80e5ff;
+}
+
+body[data-theme="ocean"] .upgrades-panel,
+body[data-theme="ocean"] #extra-game-panel {
+    background: var(--panel-bg);
+    color: white;
+}
+
+body[data-theme="ocean"] .extra-unit-card,
+body[data-theme="ocean"] .theme-box {
+    background: var(--card-bg);
+    color: #063b56;
+}
+
+/* GOLD THEMA */
+
+body[data-theme="gold"] {
+    --page-bg: #352400;
+    --panel-bg: #6b4b00;
+    --card-bg: #4b3500;
+    --text-color: #fff1a8;
+    background: #352400;
+    background-image: none;
+}
+
+body[data-theme="gold"] h1,
+body[data-theme="gold"] h2,
+body[data-theme="gold"] h3 {
+    color: #ffd166;
+}
+
+body[data-theme="gold"] .upgrades-panel,
+body[data-theme="gold"] #extra-game-panel {
+    background: var(--panel-bg);
+    color: var(--text-color);
+}
+
+body[data-theme="gold"] .extra-unit-card,
+body[data-theme="gold"] .theme-box {
+    background: var(--card-bg);
+    color: var(--text-color);
+}
+
+/* THEMA KLEUREN */
+
+body[data-theme] .factory {
+    border-bottom-color: var(--card-bg);
+}
+
+/* LIGHT EN DARK THEMA VERBERGEN */
+
+#theme-light,
+#theme-dark {
+    display: none !important;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
     body {
-        padding: 20px 0 20px 20px;
+        padding: 20px;
     }
 
     .game-layout {
@@ -242,9 +480,7 @@ button:active {
     }
 
     .cookie-area {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+        min-height: 500px;
     }
 
     .upgrades-panel {
@@ -254,4 +490,41 @@ button:active {
         border-top: 2px solid #6c63ff;
     }
 
+    #extra-game-panel {
+        margin-top: 25px;
+        padding: 12px;
+    }
+
+    .extra-units-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
+    #cookie {
+        width: 160px;
+        height: 160px;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 12px;
+    }
+
+    h1 {
+        font-size: 32px;
+    }
+
+    .extra-units-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .theme-buttons {
+        flex-direction: column;
+    }
+
+    .theme-buttons button {
+        max-width: none;
+        width: 100%;
+        box-sizing: border-box;
+    }
 }

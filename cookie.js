@@ -1,4 +1,3 @@
-
 class Factory {
     constructor(name, price, production, buttonId, countId, cpsId) {
         Object.assign(this, { name, price, production, buttonId, countId, cpsId });
@@ -110,24 +109,31 @@ class Game {
 
         this.epstein = new Factory("Epstein", 10, 1,
             "epstein", "epstein-count", "epstein-cps");
+
         this.micheal = new Factory("Micheal Jackson", 100, 10,
             "micheal-jackson", "micheal-count", "micheal-cps");
+
         this.rKelly = new Factory("R. Kelly", 1000, 100,
             "r-kelly", "r-kelly-count", "r-kelly-cps");
+
         this.trump = new Factory("Donald Trump", 1000000, 100000,
             "donald-trump", "trump-count", "trump-cps");
 
         this.epsteinUpgrade = new Upgrade("Epstein", 2,
             "epstein-upgrade", this.epstein);
+
         this.michealUpgrade = new Upgrade("Micheal Jackson", 4,
             "micheal-upgrade", this.micheal);
+
         this.rKellyUpgrade = new Upgrade("R. Kelly", 6,
             "r-kelly-upgrade", this.rKelly);
+
         this.trumpUpgrade = new Upgrade("Donald Trump", 25,
             "trump-upgrade", this.trump);
 
         this.golden = new Upgrade("Gouden cookie", 5,
             "special-upgrade", null, "golden");
+
         this.superFactory = new Upgrade("Super fabriek", 10,
             "special-upgrade-2", null, "super");
 
@@ -139,14 +145,17 @@ class Game {
                 "neverland-count", "neverland-cps",
                 "neverland-requirement", () => this.michealUpgrade.count,
                 2, 11000),
+
             new SpecialBuilding("Recording Studio", "recording-studio",
                 "studio-count", "studio-cps",
                 "studio-requirement", () => this.rKellyUpgrade.count,
                 3, 12000),
+
             new SpecialBuilding("American Border", "american-border",
                 "border-count", "border-cps",
                 "border-requirement", () => this.trumpUpgrade.count,
                 5, 14000),
+
             new SpecialBuilding("White House", "white-house",
                 "white-house-count", "white-house-cps",
                 "white-house-requirement", () => this.trumpUpgrade.count,
@@ -157,7 +166,6 @@ class Game {
         this.updateDisplay();
     }
 
-    // Grote getallen afkorten naar k, M, B, T, Qa en Qi.
     formatNumber(number) {
         if (!Number.isFinite(number)) return "0";
 
@@ -376,3 +384,258 @@ class Game {
 const game = new Game();
 game.startProduction();
 game.startSpecialCoins();
+
+
+// EXTRA EENHEDEN: ALLEEN DE VIER NIEUWE EENHEDEN
+
+game.extraFactories = [
+    new Factory("Indonesië", 5000000, 250000,
+        "indonesia", "indonesia-count", "indonesia-cps"),
+
+    new Factory("Israël", 25000000, 1000000,
+        "israel", "israel-count", "israel-cps"),
+
+    new Factory("China", 100000000, 5000000,
+        "china", "china-count", "china-cps"),
+
+    new Factory("Plastic Sea", 500000000, 25000000,
+        "plastic-sea", "plastic-sea-count", "plastic-sea-cps")
+];
+
+game.extraUpgrades = game.extraFactories.map((factory, i) =>
+    new Upgrade(
+        factory.name,
+        [8, 12, 18, 25][i],
+        factory.buttonId + "-upgrade",
+        factory
+    )
+);
+
+
+// EXTRA MENU
+
+const extraPanel = document.createElement("section");
+extraPanel.id = "extra-game-panel";
+
+extraPanel.innerHTML = `
+    <h2>🍪 Extra eenheden</h2>
+    <div class="extra-units-grid"></div>
+
+    <div class="theme-box">
+        <h2>🎨 Thema's</h2>
+        <p id="theme-status">
+            Je begint zonder thema. Koop een thema met cookies.
+        </p>
+
+        <div class="theme-buttons">
+            <button data-theme="candy" data-cost="500">
+                🍬 Candy (500 cookies)
+            </button>
+
+            <button data-theme="ocean" data-cost="5000">
+                🌊 Ocean (5.000 cookies)
+            </button>
+
+            <button data-theme="gold" data-cost="50000">
+                👑 Gold (50.000 cookies)
+            </button>
+        </div>
+    </div>
+`;
+
+(
+    document.querySelector(".factories-panel") ||
+    document.querySelector(".upgrades-panel") ||
+    document.querySelector("main") ||
+    document.body
+).appendChild(extraPanel);
+
+
+const extraGrid = extraPanel.querySelector(".extra-units-grid");
+
+game.extraFactories.forEach((factory, i) => {
+    const card = document.createElement("div");
+    card.className = "extra-unit-card";
+
+    card.innerHTML = `
+        <h3>${factory.name}</h3>
+
+        <p>Bezit:
+            <span id="${factory.countId}">0</span>
+        </p>
+
+        <p>Productie:
+            <span id="${factory.cpsId}">0</span> cookies/sec
+        </p>
+
+        <button id="${factory.buttonId}"></button>
+
+        <p>Upgrades:
+            <span id="${factory.buttonId}-upgrade-count">0</span>
+        </p>
+
+        <button id="${factory.buttonId}-upgrade"></button>
+    `;
+
+    extraGrid.appendChild(card);
+
+    document.getElementById(factory.buttonId)
+        .addEventListener("click", () => factory.buy(game));
+
+    document.getElementById(factory.buttonId + "-upgrade")
+        .addEventListener("click", () =>
+            game.extraUpgrades[i].buy(game)
+        );
+});
+
+
+// PRODUCTIE VAN DE EXTRA EENHEDEN
+
+const originalGetCps = game.getCps.bind(game);
+
+game.getCps = function () {
+    return originalGetCps() +
+        this.extraFactories.reduce(
+            (sum, factory) => sum + factory.getCps(), 0
+        );
+};
+
+
+// DISPLAY BIJWERKEN
+
+const originalUpdateDisplay = game.updateDisplay.bind(game);
+
+game.updateDisplay = function () {
+    originalUpdateDisplay();
+
+    this.extraFactories.forEach((factory, i) => {
+        this.updateFactory(factory);
+
+        const upgrade = this.extraUpgrades[i];
+
+        this.setText(
+            upgrade.buttonId + "-count",
+            this.formatNumber(upgrade.count)
+        );
+
+        this.updateUpgrade(
+            upgrade,
+            "Upgrade " + factory.name
+        );
+    });
+
+    updateThemeUnlocks();
+};
+
+
+// VLIEGENDE KOEKJES
+
+function showFlyingCookie() {
+    const cookie = document.getElementById("cookie");
+    if (!cookie) return;
+
+    const rect = cookie.getBoundingClientRect();
+    const crumb = document.createElement("span");
+
+    crumb.className = "flying-cookie";
+    crumb.textContent = "🍪";
+
+    crumb.style.left =
+        (rect.left + rect.width / 2 +
+        (Math.random() * 70 - 35)) + "px";
+
+    crumb.style.top =
+        (rect.top + rect.height / 2 +
+        (Math.random() * 30 - 15)) + "px";
+
+    document.body.appendChild(crumb);
+    setTimeout(() => crumb.remove(), 900);
+}
+
+const originalClickCookie = game.clickCookie.bind(game);
+
+game.clickCookie = function () {
+    originalClickCookie();
+
+    for (let i = 0; i < 5; i++) {
+        showFlyingCookie();
+    }
+};
+
+
+// THEMA'S KOPEN MET COOKIES
+
+let unlockedThemes = JSON.parse(
+    localStorage.getItem("cookieUnlockedThemes") || "[]"
+).filter(theme => ["candy", "ocean", "gold"].includes(theme));
+
+function applyTheme(theme) {
+    document.body.dataset.theme = theme;
+    localStorage.setItem("cookieTheme", theme);
+}
+
+function updateThemeUnlocks() {
+    // Alleen de themaknoppen aanpassen, niet de hele website.
+    document.querySelectorAll("button[data-theme]").forEach(button => {
+        const theme = button.dataset.theme;
+        const cost = Number(button.dataset.cost);
+        const owned = unlockedThemes.includes(theme);
+
+        button.disabled = !owned && game.cookies < cost;
+
+        button.textContent = owned
+            ? ({
+                candy: "🍬 Candy — gekocht",
+                ocean: "🌊 Ocean — gekocht",
+                gold: "👑 Gold — gekocht"
+            }[theme])
+            : ({
+                candy: "🍬 Koop Candy",
+                ocean: "🌊 Koop Ocean",
+                gold: "👑 Koop Gold"
+            }[theme]) +
+            ` (${game.formatNumber(cost)} cookies)`;
+    });
+
+    const status = document.getElementById("theme-status");
+
+    if (status) {
+        status.textContent = unlockedThemes.length
+            ? "Gekochte thema's: " + unlockedThemes.join(", ")
+            : "Je begint zonder thema. Koop een thema met cookies.";
+    }
+}
+
+
+// THEMA KOPEN EN ACTIVEREN
+
+document.querySelectorAll("button[data-theme]").forEach(button => {
+    button.addEventListener("click", () => {
+        const theme = button.dataset.theme;
+        const cost = Number(button.dataset.cost);
+
+        // Als je het thema nog niet hebt, moet je het eerst kopen.
+        if (!unlockedThemes.includes(theme)) {
+            if (game.cookies < cost) return;
+
+            game.cookies -= cost;
+            unlockedThemes.push(theme);
+
+            localStorage.setItem(
+                "cookieUnlockedThemes",
+                JSON.stringify(unlockedThemes)
+            );
+        }
+
+        // Een gekocht thema kun je steeds opnieuw gebruiken.
+        applyTheme(theme);
+        game.updateDisplay();
+    });
+});
+
+
+// Je begint zonder actief thema.
+document.body.removeAttribute("data-theme");
+localStorage.removeItem("cookieTheme");
+
+game.updateDisplay();
