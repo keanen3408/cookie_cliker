@@ -358,6 +358,7 @@ body[data-theme="candy"] {
     --panel-bg: rgba(60, 15, 50, .92);
     --card-bg: #fff0f8;
     --text-color: #57204a;
+
     background-color: #ffe0f0;
     background-image: url("./blosem.jpg");
     background-position: center;
@@ -395,6 +396,7 @@ body[data-theme="ocean"] {
     --panel-bg: rgba(3, 35, 60, .92);
     --card-bg: #e9fbff;
     --text-color: #063b56;
+
     background-color: #063b56;
     background-image: url("./ocean.jpg");
     background-position: center;
@@ -425,15 +427,24 @@ body[data-theme="ocean"] .theme-box {
     color: #063b56;
 }
 
-/* GOLD THEMA */
+/* GOLD THEMA - GOUDEN BOOM ACHTERGROND */
 
 body[data-theme="gold"] {
     --page-bg: #352400;
-    --panel-bg: #6b4b00;
-    --card-bg: #4b3500;
-    --text-color: #fff1a8;
-    background: #352400;
-    background-image: none;
+    --panel-bg: rgba(70, 45, 0, .92);
+    --card-bg: rgba(75, 53, 0, .94);
+    --text-color: #7e7961;
+
+    background-color: #352400;
+    background-image: url("./anime gold.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+body[data-theme="gold"] .cookie-area {
+    background: transparent;
 }
 
 body[data-theme="gold"] h1,
@@ -458,13 +469,6 @@ body[data-theme="gold"] .theme-box {
 
 body[data-theme] .factory {
     border-bottom-color: var(--card-bg);
-}
-
-/* LIGHT EN DARK THEMA VERBERGEN */
-
-#theme-light,
-#theme-dark {
-    display: none !important;
 }
 
 /* RESPONSIVE */
