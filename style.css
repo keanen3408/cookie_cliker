@@ -611,3 +611,31 @@ body[data-theme="blossem"] .cookie-area p {
     border: 2px solid #00bcd4;
     border-radius: 14px;
 }
+
+#plastic-cleanup-upgrade {
+    background: #00bcd4;
+    color: white;
+    box-shadow: 0 5px 0 #007c91;
+}
+
+#plastic-cleanup-upgrade:hover:not(:disabled) {
+    background: #4dd0e1;
+}
+
+#plastic-sea-status {
+    color: #00d9ff;
+    font-weight: bold;
+}
+
+#plastic-cleanup-count {
+    color: #00e5ff;
+    font-weight: bold;
+    font-size: 22px;
+}
+
+button:disabled {
+    background: #34313d !important;
+    color: #888 !important;
+    box-shadow: 0 4px 0 #201e26 !important;
+    cursor: not-allowed;
+}
