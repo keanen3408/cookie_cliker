@@ -639,3 +639,22 @@ button:disabled {
     box-shadow: 0 4px 0 #201e26 !important;
     cursor: not-allowed;
 }
+/* SAVE GAME KNOP */
+
+#save-game {
+    background: #00b894;
+    color: white;
+    box-shadow: 0 5px 0 #007a63;
+    margin-top: 15px;
+}
+
+#save-game:hover:not(:disabled) {
+    background: #00d2a8;
+}
+
+#save-status {
+    font-size: 15px;
+    font-weight: bold;
+    color: #70e000;
+    margin-top: 5px;
+}

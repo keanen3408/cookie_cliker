@@ -1,4 +1,3 @@
-
 class Factory {
     constructor(name, price, production, buttonId, countId, cpsId) {
         Object.assign(this, { name, price, production, buttonId, countId, cpsId });
@@ -54,6 +53,7 @@ class CrosshairUpgrade extends Upgrade {
         this.count++;
         game.clickPower *= 2;
         this.cookiePrice = Math.ceil(this.cookiePrice * 2.5);
+
         game.updateDisplay();
     }
 }
@@ -83,11 +83,13 @@ class Island {
 
 class SpecialBuilding {
     constructor(name, buttonId, countId, cpsId, requirementId,
-                requirement, cost, production) {
+        requirement, cost, production) {
+
         Object.assign(this, {
             name, buttonId, countId, cpsId, requirementId,
             requirement, cost, production
         });
+
         this.count = 0;
     }
 
@@ -108,6 +110,7 @@ class Game {
         this.clickCount = 0;
         this.clickPower = 1;
         this.bonusCps = 0;
+
         this.plasticCleanCount = 0;
         this.plasticCleanPrice = 10;
         this.plasticSeaClean = false;
@@ -116,16 +119,23 @@ class Game {
         this.factories = [
             new Factory("Elon Musk", 10, 1,
                 "elon-musk", "elon-musk-count", "elon-musk-cps"),
+
             new Factory("Michael Jackson", 100, 10,
                 "micheal-jackson", "micheal-count", "micheal-cps"),
+
             new Factory("R. Kelly", 1000, 100,
                 "r-kelly", "r-kelly-count", "r-kelly-cps"),
+
             new Factory("Donald Trump", 1000000, 100000,
                 "donald-trump", "trump-count", "trump-cps")
         ];
 
-        [this.ElonMusk, this.micheal, this.rKelly, this.trump] =
-            this.factories;
+        [
+            this.ElonMusk,
+            this.micheal,
+            this.rKelly,
+            this.trump
+        ] = this.factories;
 
         this.upgrades = [
             new Upgrade("Elon Musk", 2, "elon-musk-upgrade", this.ElonMusk),
@@ -173,10 +183,13 @@ class Game {
         this.extraFactories = [
             new Factory("Indonesië", 5000000, 250000,
                 "indonesia", "indonesia-count", "indonesia-cps"),
+
             new Factory("Israël", 25000000, 1000000,
                 "israel", "israel-count", "israel-cps"),
+
             new Factory("China", 100000000, 5000000,
                 "china", "china-count", "china-cps"),
+
             new Factory("Plastic Sea", 500000000, 25000000,
                 "plastic-sea", "plastic-sea-count", "plastic-sea-cps")
         ];
@@ -187,21 +200,172 @@ class Game {
         );
 
         this.unlockedThemes = [];
+
+        // Laad het laatst opgeslagen spel voordat de knoppen worden gemaakt.
+        this.loadGame();
+
         this.setupEvents();
         this.createExtraPanel();
-        // Klikfunctie voor de plastic-opruimknop
-this.on("plastic-cleanup-upgrade", () => this.buyPlasticUpgrade());
 
-// Klikfuncties voor de extra fabrieken
-this.extraFactories.forEach(factory => {
-    this.on(factory.buttonId, () => factory.buy(this));
-});
+        this.on("plastic-cleanup-upgrade", () => this.buyPlasticUpgrade());
 
-// Klikfuncties voor de extra upgrades
-this.extraUpgrades.forEach(upgrade => {
-    this.on(upgrade.buttonId, () => upgrade.buy(this));
-});
+        this.extraFactories.forEach(factory => {
+            this.on(factory.buttonId, () => factory.buy(this));
+        });
+
+        this.extraUpgrades.forEach(upgrade => {
+            this.on(upgrade.buttonId, () => upgrade.buy(this));
+        });
+
         this.updateDisplay();
+    }
+
+    // SPEL OPSLAAN
+    saveGame() {
+        const data = {
+            cookies: this.cookies,
+            specialCoins: this.specialCoins,
+            clickCount: this.clickCount,
+            clickPower: this.clickPower,
+            bonusCps: this.bonusCps,
+
+            factories: this.factories.map(factory => ({
+                count: factory.count,
+                price: factory.price,
+                upgradeCount: factory.upgradeCount
+            })),
+
+            upgrades: this.upgrades.map(upgrade => ({
+                count: upgrade.count,
+                price: upgrade.price
+            })),
+
+            extraFactories: this.extraFactories.map(factory => ({
+                count: factory.count,
+                price: factory.price,
+                upgradeCount: factory.upgradeCount
+            })),
+
+            extraUpgrades: this.extraUpgrades.map(upgrade => ({
+                count: upgrade.count,
+                price: upgrade.price
+            })),
+
+            crosshair: {
+                count: this.crosshair.count,
+                cookiePrice: this.crosshair.cookiePrice
+            },
+
+            island: {
+                count: this.island.count,
+                bought: this.island.bought
+            },
+
+            specialBuildings: this.specialBuildings.map(building => ({
+                count: building.count
+            })),
+
+            plasticCleanCount: this.plasticCleanCount,
+            plasticCleanPrice: this.plasticCleanPrice,
+            plasticSeaClean: this.plasticSeaClean,
+            plasticProductionBonus: this.plasticProductionBonus,
+
+            unlockedThemes: this.unlockedThemes,
+            theme: document.body.dataset.theme || "normal"
+        };
+
+        try {
+            localStorage.setItem("cookieClickerSave", JSON.stringify(data));
+            this.setText("save-status", "Spel opgeslagen!");
+        } catch (error) {
+            this.setText("save-status", "Opslaan is niet gelukt.");
+            console.log("Opslaan mislukt:", error);
+        }
+    }
+
+    // OPGESLAGEN SPEL LADEN
+    loadGame() {
+        try {
+            const savedGame = localStorage.getItem("cookieClickerSave");
+
+            if (!savedGame) return;
+
+            const data = JSON.parse(savedGame);
+
+            this.cookies = data.cookies ?? 0;
+            this.specialCoins = data.specialCoins ?? 0;
+            this.clickCount = data.clickCount ?? 0;
+            this.clickPower = data.clickPower ?? 1;
+            this.bonusCps = data.bonusCps ?? 0;
+
+            data.factories?.forEach((saved, i) => {
+                if (this.factories[i]) {
+                    this.factories[i].count = saved.count;
+                    this.factories[i].price = saved.price;
+                    this.factories[i].upgradeCount = saved.upgradeCount;
+                }
+            });
+
+            data.upgrades?.forEach((saved, i) => {
+                if (this.upgrades[i]) {
+                    this.upgrades[i].count = saved.count;
+                    this.upgrades[i].price = saved.price;
+                }
+            });
+
+            data.extraFactories?.forEach((saved, i) => {
+                if (this.extraFactories[i]) {
+                    this.extraFactories[i].count = saved.count;
+                    this.extraFactories[i].price = saved.price;
+                    this.extraFactories[i].upgradeCount = saved.upgradeCount;
+                }
+            });
+
+            data.extraUpgrades?.forEach((saved, i) => {
+                if (this.extraUpgrades[i]) {
+                    this.extraUpgrades[i].count = saved.count;
+                    this.extraUpgrades[i].price = saved.price;
+                }
+            });
+
+            if (data.crosshair) {
+                this.crosshair.count = data.crosshair.count;
+                this.crosshair.cookiePrice = data.crosshair.cookiePrice;
+            }
+
+            if (data.island) {
+                this.island.count = data.island.count;
+                this.island.bought = data.island.bought;
+            }
+
+            data.specialBuildings?.forEach((saved, i) => {
+                if (this.specialBuildings[i]) {
+                    this.specialBuildings[i].count = saved.count;
+                }
+            });
+
+            this.plasticCleanCount = data.plasticCleanCount ?? 0;
+            this.plasticCleanPrice = data.plasticCleanPrice ?? 10;
+            this.plasticSeaClean = data.plasticSeaClean ?? false;
+            this.plasticProductionBonus = data.plasticProductionBonus ?? 0;
+
+            this.unlockedThemes = data.unlockedThemes ?? [];
+
+            if (this.plasticSeaClean) {
+                this.extraFactories[3].name = "Clean Sea";
+            }
+
+            if (data.theme && data.theme !== "normal") {
+                document.body.dataset.theme = data.theme;
+            } else {
+                document.body.removeAttribute("data-theme");
+            }
+
+            this.setText("save-status", "Opgeslagen spel geladen!");
+        } catch (error) {
+            console.log("Laden mislukt:", error);
+            this.setText("save-status", "Opslaan laden is niet gelukt.");
+        }
     }
 
     formatNumber(number) {
@@ -214,6 +378,7 @@ this.extraUpgrades.forEach(upgrade => {
         }
 
         let index = -1;
+
         do {
             number /= 1000;
             index++;
@@ -282,6 +447,9 @@ this.extraUpgrades.forEach(upgrade => {
     setupEvents() {
         this.on("cookie", () => this.clickCookie());
 
+        // Save-knop
+        this.on("save-game", () => this.saveGame());
+
         [...this.factories, ...this.extraFactories].forEach(factory =>
             this.on(factory.buttonId, () => factory.buy(this))
         );
@@ -330,7 +498,7 @@ this.extraUpgrades.forEach(upgrade => {
 
         const grid = panel.querySelector(".extra-units-grid");
 
-        this.extraFactories.forEach((factory, i) => {
+        this.extraFactories.forEach(factory => {
             const card = document.createElement("div");
             card.className = "extra-unit-card";
 
@@ -362,6 +530,7 @@ this.extraUpgrades.forEach(upgrade => {
 
         if (!this.unlockedThemes.includes(theme)) {
             if (this.cookies < cost) return;
+
             this.cookies -= cost;
             this.unlockedThemes.push(theme);
         }
@@ -373,6 +542,7 @@ this.extraUpgrades.forEach(upgrade => {
     updateFactory(factory) {
         this.setText(factory.countId, this.formatNumber(factory.count));
         this.setText(factory.cpsId, this.formatNumber(factory.getCps()));
+
         this.setText(factory.buttonId,
             `${factory.name} fabriek (${this.formatNumber(factory.price)} cookies)`);
     }
@@ -390,36 +560,42 @@ this.extraUpgrades.forEach(upgrade => {
 
         this.upgrades.forEach(upgrade => {
             this.setText(upgrade.buttonId + "-count", upgrade.count);
+
             this.setText(upgrade.buttonId,
                 `${upgrade.name} upgrade (${this.formatNumber(upgrade.price)} speciale coins)`);
         });
 
         this.extraUpgrades.forEach(upgrade => {
             this.setText(upgrade.buttonId + "-count", upgrade.count);
+
             this.setText(upgrade.buttonId,
                 `Upgrade ${upgrade.name} (${this.formatNumber(upgrade.price)} speciale coins)`);
         });
 
         this.setText("golden-count", this.golden.count);
         this.setText("super-count", this.superFactory.count);
+
         this.setText("special-upgrade",
             `Gouden cookie (${this.golden.price} speciale coins)`);
+
         this.setText("special-upgrade-2",
             `Super fabriek (${this.superFactory.price} speciale coins)`);
 
         this.setText("crosshair-count", this.crosshair.count);
+
         this.setText("crosshair-upgrade",
-    `Cursor upgrade (${this.formatNumber(this.crosshair.cookiePrice)} cookies)`
-);
+            `Cursor upgrade (${this.formatNumber(this.crosshair.cookiePrice)} cookies)`);
 
         this.setText("island-count", this.island.count);
         this.setText("island-cps", this.island.getCps());
+
         this.setText("elon-musk-island", this.island.bought
             ? "Elon Musk Island gekocht"
             : "Koop Elon Musk Island (1 speciale coin; 10 Elon Musk-upgrades nodig)");
 
         this.specialBuildings.forEach(building => {
             this.setText(building.countId, building.count);
+
             this.setText(building.cpsId,
                 this.formatNumber(building.count * building.production));
 
@@ -432,11 +608,12 @@ this.extraUpgrades.forEach(upgrade => {
         });
 
         this.setText("plastic-cleanup-count", this.plasticCleanCount);
+
         this.setText("plastic-cleanup-upgrade",
-    this.plasticCleanCount >= 100
-        ? "Clean Sea bereikt!"
-        : `Plastic opruim upgrade (${this.formatNumber(this.plasticCleanPrice)} speciale coins)`
-);
+            this.plasticCleanCount >= 100
+                ? "Clean Sea bereikt!"
+                : `Plastic opruim upgrade (${this.formatNumber(this.plasticCleanPrice)} speciale coins)`
+        );
 
         this.setText("plastic-sea-status", this.plasticSeaClean
             ? "🌊 Clean Sea! Al het plastic is verwijderd!"
@@ -470,6 +647,7 @@ this.extraUpgrades.forEach(upgrade => {
         );
 
         check("crosshair-upgrade", this.cookies >= this.crosshair.cookiePrice);
+
         check("elon-musk-island", !this.island.bought &&
             this.ElonMuskUpgrade.count >= 10 &&
             this.specialCoins >= this.island.price);
@@ -488,6 +666,7 @@ this.extraUpgrades.forEach(upgrade => {
         document.querySelectorAll("button[data-theme]").forEach(button => {
             const theme = button.dataset.theme;
             const cost = Number(button.dataset.cost);
+
             const owned = theme === "normal" ||
                 this.unlockedThemes.includes(theme);
 
@@ -509,14 +688,18 @@ this.extraUpgrades.forEach(upgrade => {
 
         for (let i = 0; i < 5; i++) {
             const crumb = document.createElement("span");
+
             crumb.className = "flying-cookie";
             crumb.textContent = "🍪";
+
             crumb.style.left = rect.left + rect.width / 2 +
                 (Math.random() * 70 - 35) + "px";
+
             crumb.style.top = rect.top + rect.height / 2 +
                 (Math.random() * 30 - 15) + "px";
 
             document.body.appendChild(crumb);
+
             setTimeout(() => crumb.remove(), 900);
         }
     }
@@ -537,5 +720,6 @@ this.extraUpgrades.forEach(upgrade => {
 }
 
 const game = new Game();
+
 game.startProduction();
 game.startSpecialCoins();
