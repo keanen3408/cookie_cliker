@@ -433,9 +433,10 @@ this.extraUpgrades.forEach(upgrade => {
 
         this.setText("plastic-cleanup-count", this.plasticCleanCount);
         this.setText("plastic-cleanup-upgrade",
-            this.plasticCleanCount >= 100
-                ? "Clean Sea bereikt!"
-                : `Plastic opruim upgrade (${this.plasticCleanPrice} speciale coins)`);
+    this.plasticCleanCount >= 100
+        ? "Clean Sea bereikt!"
+        : `Plastic opruim upgrade (${this.formatNumber(this.plasticCleanPrice)} speciale coins)`
+);
 
         this.setText("plastic-sea-status", this.plasticSeaClean
             ? "🌊 Clean Sea! Al het plastic is verwijderd!"
