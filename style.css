@@ -117,14 +117,9 @@ button:hover:not(:disabled) {
     background: #ffb866;
 }
 
-button:active {
+button:active:not(:disabled) {
     box-shadow: 0 2px 0 #b85c00;
     transform: translateY(3px);
-}
-
-button:disabled {
-    opacity: .55;
-    cursor: not-allowed;
 }
 
 #cookie {
@@ -154,7 +149,7 @@ button:disabled {
     max-width: 340px;
 }
 
-#epstein,
+#elon-musk,
 #micheal-jackson,
 #r-kelly,
 #donald-trump,
@@ -164,15 +159,15 @@ button:disabled {
     box-shadow: 0 5px 0 #4038a8;
 }
 
-#epstein:hover,
-#micheal-jackson:hover,
-#r-kelly:hover,
-#donald-trump:hover,
-.advanced-factory > button:first-of-type:hover {
+#elon-musk:hover:not(:disabled),
+#micheal-jackson:hover:not(:disabled),
+#r-kelly:hover:not(:disabled),
+#donald-trump:hover:not(:disabled),
+.advanced-factory > button:first-of-type:hover:not(:disabled) {
     background: #8179ff;
 }
 
-#epstein-upgrade,
+#elon-musk-upgrade,
 #micheal-upgrade,
 #r-kelly-upgrade,
 #trump-upgrade,
@@ -182,11 +177,11 @@ button:disabled {
     box-shadow: 0 5px 0 #663a7a;
 }
 
-#epstein-upgrade:hover,
-#micheal-upgrade:hover,
-#r-kelly-upgrade:hover,
-#trump-upgrade:hover,
-.advanced-factory > button:nth-of-type(2):hover {
+#elon-musk-upgrade:hover:not(:disabled),
+#micheal-upgrade:hover:not(:disabled),
+#r-kelly-upgrade:hover:not(:disabled),
+#trump-upgrade:hover:not(:disabled),
+.advanced-factory > button:nth-of-type(2):hover:not(:disabled) {
     background: #b06dcc;
 }
 
@@ -196,17 +191,17 @@ button:disabled {
     box-shadow: 0 5px 0 #007a63;
 }
 
-#crosshair-upgrade:hover {
+#crosshair-upgrade:hover:not(:disabled) {
     background: #00d2a8;
 }
 
-#epstein-island {
+#elon-musk-island {
     background: #e17055;
     color: white;
     box-shadow: 0 5px 0 #a0402a;
 }
 
-#epstein-island:hover {
+#elon-musk-island:hover:not(:disabled) {
     background: #f08b70;
 }
 
@@ -217,8 +212,8 @@ button:disabled {
     box-shadow: 0 5px 0 #b88900;
 }
 
-#special-upgrade:hover,
-#special-upgrade-2:hover {
+#special-upgrade:hover:not(:disabled),
+#special-upgrade-2:hover:not(:disabled) {
     background: #ffe29a;
 }
 
@@ -228,11 +223,11 @@ button:disabled {
 #crosshair-count,
 #island-count,
 #click-count,
-#epstein-count,
+#elon-musk-count,
 #micheal-count,
 #r-kelly-count,
 #trump-count,
-#epstein-cps,
+#elon-musk-cps,
 #micheal-cps,
 #r-kelly-cps,
 #trump-cps,
@@ -296,13 +291,8 @@ button:disabled {
     background: #a38aef;
 }
 
-#extra-game-panel button:active {
+#extra-game-panel button:active:not(:disabled) {
     transform: translateY(2px);
-}
-
-#extra-game-panel button:disabled {
-    opacity: .55;
-    cursor: not-allowed;
 }
 
 .extra-unit-card button {
@@ -351,9 +341,9 @@ button:disabled {
     }
 }
 
-/* CANDY THEMA - ROZE BLOESEMS */
+/* BLOSSOM THEMA */
 
-body[data-theme="candy"] {
+body[data-theme="blossem"] {
     --page-bg: #ffe0f0;
     --panel-bg: rgba(60, 15, 50, .92);
     --card-bg: #fff0f8;
@@ -367,29 +357,29 @@ body[data-theme="candy"] {
     background-attachment: fixed;
 }
 
-body[data-theme="candy"] .cookie-area {
+body[data-theme="blossem"] .cookie-area {
     background: transparent;
 }
 
-body[data-theme="candy"] h1,
-body[data-theme="candy"] h2,
-body[data-theme="candy"] h3 {
-    color: #ffb8dc;
+body[data-theme="blossem"] h1,
+body[data-theme="blossem"] h2,
+body[data-theme="blossem"] h3 {
+    color: #ff0080;
 }
 
-body[data-theme="candy"] .upgrades-panel,
-body[data-theme="candy"] #extra-game-panel {
+body[data-theme="blossem"] .upgrades-panel,
+body[data-theme="blossem"] #extra-game-panel {
     background: var(--panel-bg);
     color: white;
 }
 
-body[data-theme="candy"] .extra-unit-card,
-body[data-theme="candy"] .theme-box {
+body[data-theme="blossem"] .extra-unit-card,
+body[data-theme="blossem"] .theme-box {
     background: var(--card-bg);
     color: #57204a;
 }
 
-/* OCEAN THEMA - ZEE BIJ ZONSONDERGANG */
+/* OCEAN THEMA */
 
 body[data-theme="ocean"] {
     --page-bg: #d9f6ff;
@@ -427,13 +417,13 @@ body[data-theme="ocean"] .theme-box {
     color: #063b56;
 }
 
-/* GOLD THEMA - GOUDEN BOOM ACHTERGROND */
+/* GOLD THEMA */
 
 body[data-theme="gold"] {
     --page-bg: #352400;
-    --panel-bg: rgba(70, 45, 0, .92);
-    --card-bg: rgba(75, 53, 0, .94);
-    --text-color: #7e7961;
+    --panel-bg: rgba(55, 38, 5, .96);
+    --card-bg: rgba(75, 53, 0, .96);
+    --text-color: #fff0b3;
 
     background-color: #352400;
     background-image: url("./anime gold.jpg");
@@ -450,25 +440,85 @@ body[data-theme="gold"] .cookie-area {
 body[data-theme="gold"] h1,
 body[data-theme="gold"] h2,
 body[data-theme="gold"] h3 {
-    color: #ffd166;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px #241500;
 }
 
 body[data-theme="gold"] .upgrades-panel,
 body[data-theme="gold"] #extra-game-panel {
     background: var(--panel-bg);
-    color: var(--text-color);
+    color: #fff0b3;
 }
 
 body[data-theme="gold"] .extra-unit-card,
 body[data-theme="gold"] .theme-box {
     background: var(--card-bg);
-    color: var(--text-color);
+    color: #fff0b3;
+}
+
+/* GOUDEN CIJFERS EN TEKST */
+
+body[data-theme="gold"] .cookie-area p,
+body[data-theme="gold"] .upgrades-panel p,
+body[data-theme="gold"] #extra-game-panel p {
+    color: #ffe28a !important;
+    text-shadow: 1px 1px 3px #241500;
+}
+
+body[data-theme="gold"] .upgrades-panel span,
+body[data-theme="gold"] #extra-game-panel span {
+    color: #ffd700 !important;
+    font-weight: bold;
+    text-shadow: 1px 1px 4px #000;
+}
+
+body[data-theme="gold"] #counter,
+body[data-theme="gold"] #cps,
+body[data-theme="gold"] #click-power,
+body[data-theme="gold"] #click-power-display,
+body[data-theme="gold"] #special-coins {
+    color: #ffd700 !important;
+    font-size: 1.15em;
+    font-weight: bold;
+    text-shadow: 1px 1px 4px #000;
 }
 
 /* THEMA KLEUREN */
 
 body[data-theme] .factory {
     border-bottom-color: var(--card-bg);
+}
+
+/* DONKERE KOOPKNOPPEN ALS JE ZE NIET KUNT BETALEN */
+
+button:disabled {
+    background: #34313d !important;
+    color: #888 !important;
+    box-shadow: 0 4px 0 #201e26 !important;
+    opacity: 1 !important;
+    cursor: not-allowed;
+}
+
+button:disabled:hover {
+    background: #34313d !important;
+}
+
+button:disabled:active {
+    transform: none !important;
+    box-shadow: 0 4px 0 #201e26 !important;
+}
+
+/* GOLD EN BLOSSOM TEKST BOVEN HET KOEKJE */
+
+body[data-theme="gold"] .cookie-area h1,
+body[data-theme="gold"] .cookie-area p {
+    color: #ffd700 !important;
+    text-shadow: 2px 2px 4px #241500;
+}
+
+body[data-theme="blossem"] .cookie-area h1,
+body[data-theme="blossem"] .cookie-area p {
+    color: rgb(255, 0, 157);
 }
 
 /* RESPONSIVE */
@@ -531,4 +581,33 @@ body[data-theme] .factory {
         width: 100%;
         box-sizing: border-box;
     }
+}
+/* PLASTIC SEA OPRUIM UPGRADE */
+
+#plastic-cleanup-upgrade {
+    background: #00bcd4;
+    color: white;
+    box-shadow: 0 5px 0 #007c91;
+}
+
+#plastic-cleanup-upgrade:hover:not(:disabled) {
+    background: #4dd0e1;
+}
+
+#plastic-sea-status {
+    color: #00d9ff;
+    font-weight: bold;
+}
+
+#plastic-cleanup-count {
+    color: #00e5ff;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+/* CLEAN SEA */
+
+.extra-unit-card:has(#plastic-sea) {
+    border: 2px solid #00bcd4;
+    border-radius: 14px;
 }
